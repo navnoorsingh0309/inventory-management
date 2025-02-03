@@ -59,7 +59,7 @@ const RequestsPage = async () => {
   }
   return (
     <div className="p-6 rounded-lg shadow-lg border border-gray-200">
-      <RequestsTabular user={curUser} category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin}/>
+      <RequestsTabular category={category} />
     </div>
   );
 };
