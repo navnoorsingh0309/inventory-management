@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { IconPlus } from "@tabler/icons-react";
 import {
   Dialog,
@@ -19,11 +19,10 @@ import SuperAdminInventoryCategoryCombo from "./InventoryPage/superAdminInventor
 
 interface Props {
   category: string;
-  isAdmin: boolean;
   isSuperAdmin: boolean;
 }
 
-const AddProjectButton: React.FC<Props> = ({ category, isAdmin, isSuperAdmin }) => {
+const AddProjectButton: React.FC<Props> = ({ category, isSuperAdmin }) => {
   const [title, setTitle] = useState("");
   const [leadName, setLeadName] = useState("");
   const [leadEmail, setLeadEmail] = useState("");
@@ -51,12 +50,12 @@ const AddProjectButton: React.FC<Props> = ({ category, isAdmin, isSuperAdmin }) 
           "Content-type": "application/json",
         },
       });
-    } catch (error: any) {
-      console.log("Error!!");
+    } catch (error) {
+      console.log(error);
       toast({ title: "An error has occurred" });
     }
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = () => {
     if (!image) {
       toast({ title: "Please upload an image before submitting." });
       return;

@@ -18,13 +18,11 @@ import { User } from "@/models/models";
 import SuperAdminInventoryCategoryCombo from "./InventoryPage/superAdminInventoryCategory";
 
 interface Props {
-  user: User;
   category: string;
   isSuperAdmin: boolean;
 }
 
 const AddInventoryButton: React.FC<Props> = ({
-  user,
   category,
   isSuperAdmin,
 }) => {
@@ -59,7 +57,7 @@ const AddInventoryButton: React.FC<Props> = ({
       },
     });
   }, [submitting]);
-  const handleSubmit = (e: any) => {
+  const handleSubmit = () => {
     if (!image) {
       alert("Please upload an image before submitting.");
       return;

@@ -32,7 +32,7 @@ const SignInPage = () => {
     return null;
   }
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isLoaded) {
@@ -53,6 +53,7 @@ const SignInPage = () => {
         setBError("Invalid email or password");
       }
     } catch (error) {
+      console.log(error);
       setBError("Invalid email or password");
     }
   };

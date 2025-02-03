@@ -70,7 +70,7 @@ const SignUpPage = () => {
     return null;
   }
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isLoaded) return;
 
@@ -84,7 +84,7 @@ const SignUpPage = () => {
 
     await signUp
       ?.create(user)
-      .then(async (result) => {
+      .then(async () => {
         // Send email
         await signUp.prepareEmailAddressVerification({
           strategy: "email_code",
@@ -99,7 +99,7 @@ const SignUpPage = () => {
   };
 
   // Verify User Email Code
-  const onPressVerify = async (e: any) => {
+  const onPressVerify = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isLoaded) {
       return;

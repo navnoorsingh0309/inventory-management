@@ -5,22 +5,16 @@ import { Tabs } from "@chakra-ui/react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { format } from "date-fns";
-import { Project, Request, User } from "@/models/models";
+import { Component, Project, Request, User } from "@/models/models";
 import { useToast } from "@/hooks/use-toast";
 import MarkAsReturnButton from "./markAsReturnButton";
 
 interface Props {
-  user: User;
   category: string;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
 }
 
 const RequestsTabular: React.FC<Props> = ({
-  user,
   category,
-  isAdmin,
-  isSuperAdmin,
 }) => {
   const [getRequests, setGetRequests] = useState(false);
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -43,13 +37,13 @@ const RequestsTabular: React.FC<Props> = ({
 
         // Filter and set specific requests
         setPendingRequests(
-          data.requests.filter((req: any) => req.status === "Pending")
+          data.requests.filter((req: Request) => req.status === "Pending")
         );
         setApprovedRequests(
-          data.requests.filter((req: any) => req.status === "Approved")
+          data.requests.filter((req: Request) => req.status === "Approved")
         );
         setRejectedRequests(
-          data.requests.filter((req: any) => req.status === "Rejected")
+          data.requests.filter((req: Request) => req.status === "Rejected")
         );
       } catch (err) {
         console.error("Error fetching requests:", err);
@@ -76,15 +70,8 @@ const RequestsTabular: React.FC<Props> = ({
 
         // Find the component in the inventory
         const component = data.inventory.find(
-          (item: any) => item._id === req.inventoryId
+          (item: Component) => item._id === req.inventoryId
         );
-
-        if (!component) {
-          return {
-            success: false,
-            message: "Component not found in inventory.",
-          };
-        }
 
         // Check stock availability
         if (component.inStock - component.inUse >= req.quantity) {
@@ -130,15 +117,15 @@ const RequestsTabular: React.FC<Props> = ({
         if (!response.ok) {
           throw new Error(result.error || "Failed to update status.");
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error updating status:", err);
-        alert(err.message);
+        alert(err);
       }
     }
 
     // Updating User-Data
     try {
-      const response = await fetch(`/api/user_data?pn=${req.userId}`, {
+      await fetch(`/api/user_data?pn=${req.userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -149,9 +136,9 @@ const RequestsTabular: React.FC<Props> = ({
           status: status,
         }),
       });
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error updating user-data:", err);
-      alert(err.message);
+      alert(err);
     }
 
     // Updating status
@@ -177,9 +164,9 @@ const RequestsTabular: React.FC<Props> = ({
         title: "Done!!",
       });
       gettingRequests();
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error updating status:", err);
-      alert(err.message);
+      alert(err);
     }
   };
 
@@ -193,9 +180,9 @@ const RequestsTabular: React.FC<Props> = ({
           (project: Project) => project.title
         );
         setProjects(projectTitles);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error fetching projects:", err);
-        alert(err.message);
+        alert(err);
       }
     };
     fetchProjects();
@@ -249,7 +236,7 @@ const RequestsTabular: React.FC<Props> = ({
         <h2 className="text-lg font-bold mb-4">Pending Requests</h2>
         {pendingRequests.length > 0 ? (
           <ul className="space-y-4">
-            {pendingRequests.map((req: any) => (
+            {pendingRequests.map((req: Request) => (
               <li
                 key={req._id}
                 className="p-4 bg-white shadow-md rounded-md border border-gray-200"
@@ -336,7 +323,7 @@ const RequestsTabular: React.FC<Props> = ({
           <div>
             {/* Overdue Requests */}
             {approvedRequests.some(
-              (req: any) => new Date(req.date) < new Date() && !req.returned
+              (req: Request) => new Date(req.date) < new Date() && !req.returned
             ) && (
               <div>
                 <h3 className="text-xl font-bold text-red-600 mb-4">
@@ -400,7 +387,7 @@ const RequestsTabular: React.FC<Props> = ({
 
             {/* Non-Overdue Requests */}
             {approvedRequests.some(
-              (req: any) => new Date(req.date) >= new Date() && !req.returned
+              (req: Request) => new Date(req.date) >= new Date() && !req.returned
             ) && (
               <div>
                 <h3 className="text-xl font-bold text-gray-700 mt-8 mb-4">
@@ -409,10 +396,10 @@ const RequestsTabular: React.FC<Props> = ({
                 <ul className="space-y-4">
                   {approvedRequests
                     .filter(
-                      (req: any) =>
+                      (req: Request) =>
                         new Date(req.date) >= new Date() && !req.returned
                     )
-                    .map((req: any) => (
+                    .map((req: Request) => (
                       <li
                         key={req._id}
                         className="p-4 bg-white shadow-md rounded-md border border-gray-200"
@@ -463,7 +450,7 @@ const RequestsTabular: React.FC<Props> = ({
             )}
 
             {/* Returned Requests */}
-            {approvedRequests.some((req: any) => req.returned) && (
+            {approvedRequests.some((req: Request) => req.returned) && (
               <div>
                 <h3 className="text-xl font-bold mt-8 mb-4 text-green-500">
                   Returned Components
@@ -556,7 +543,7 @@ const RequestsTabular: React.FC<Props> = ({
         <h2 className="text-lg font-bold mb-4">Rejected Requests</h2>
         {rejectedRequests.length > 0 ? (
           <ul className="space-y-4">
-            {rejectedRequests.map((req: any) => (
+            {rejectedRequests.map((req: Request) => (
               <li
                 key={req._id}
                 className="p-4 bg-white shadow-md rounded-md border border-gray-200"

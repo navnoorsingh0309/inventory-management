@@ -62,7 +62,7 @@ export async function PUT(req) {
         }
       );
     } else if (document.task === 1) {
-      const result = await collection.updateOne(
+      await collection.updateOne(
         { _id: new ObjectId(document._id) },
         {
           $set: {

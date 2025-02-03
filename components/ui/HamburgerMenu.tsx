@@ -6,7 +6,7 @@ import { User } from "@/models/models";
 
 interface Props {
   user: User;
-  superAdmin: String;
+  superAdmin: string;
   isAdmin: boolean;
   isSuperAdmin: boolean;
 }

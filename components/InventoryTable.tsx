@@ -37,7 +37,6 @@ const InventoryTable: React.FC<Props> = ({
   isSuperAdmin,
 }) => {
   const [inventory, setInventory] = useState<Component[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { toast } = useToast();
@@ -65,8 +64,6 @@ const InventoryTable: React.FC<Props> = ({
           const data = await res.json();
           const AdminsData = data.admins;
           const newCategories = ["BoST", ...AdminsData.map((admin: Admin) => admin.category)];
-      
-          setCategories(newCategories); // Update state
       
           // Fetch inventory **after** categories are set
           const inventoryData = await Promise.all(
@@ -115,9 +112,9 @@ const InventoryTable: React.FC<Props> = ({
       await response.json();
       removeBlock(id);
       toast({title: "Deleted!!"})
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error updating status:", err);
-      alert(err.message);
+      alert(err);
     }
   };
 

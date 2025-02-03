@@ -41,7 +41,7 @@ const MarkAsReturnButton: React.FC<props> = ({
 
   const returningComponent = async (type: number) => {
     try {
-      const promises: Promise<any>[] = [];
+      const promises: Promise<Response>[] = [];
 
       // Add inventory update to promises only if type === 0
       if (type === 0) {
@@ -136,9 +136,9 @@ const MarkAsReturnButton: React.FC<props> = ({
       }
       toast({ title: "Returned!!" });
       getReqsFunc();
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error in processing requests:", err);
-      alert(err.message);
+      alert(err);
     }
   };
 

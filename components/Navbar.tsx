@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import Hamburger_Menu from "./ui/HamburgerMenu";
 import { IconUserFilled } from "@tabler/icons-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -12,13 +12,12 @@ import { Admin, User } from "@/models/models";
 
 interface Props {
   user: User;
-  superAdmin: String;
+  superAdmin: string;
 }
 
 const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [category, setCategory] = useState("");
 
   useEffect(() => {
     const getAdmins = async () => {
@@ -31,7 +30,6 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
         adminIdsJson.map((admin: Admin) => {
           if (user.email == admin.email) {
             setIsAdmin(true);
-            setCategory(admin.category);
           }
         });
       } catch (err) {

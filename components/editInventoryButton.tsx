@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IconEdit } from "@tabler/icons-react";
-import { Component, User } from "@/models/models";
+import { Component } from "@/models/models";
 
 interface EditInventoryProps {
   component: Component,
@@ -48,10 +48,10 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
         }),
       });
 
-      const result = await response.json();
-    } catch (err: any) {
+      await response.json();
+    } catch (err) {
       console.error("Error updating status:", err);
-      alert(err.message);
+      alert(err);
     }
   };
 

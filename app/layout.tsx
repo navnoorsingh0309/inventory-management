@@ -34,9 +34,9 @@ export default async function RootLayout({
 }>) {
   const user = await currentUser();
   const curUser: User = {
-    id: user?.id!,
-    name: user?.fullName!,
-    email: user?.primaryEmailAddress?.emailAddress!,
+    id: user?.id! ?? null,
+    name: user?.fullName! ?? null,
+    email: user?.primaryEmailAddress?.emailAddress! ?? null,
   };
   return (
     <ClerkProvider>

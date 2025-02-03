@@ -31,7 +31,7 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const issueInventory = async (e: any) => {
+  const issueInventory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     type ReqId = {
       acknowledged: boolean;
@@ -63,9 +63,9 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
         },
       });
       reqId = await res.json() as ReqId;
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error updating status:", err);
-      alert(err.message);
+      alert(err);
     }
 
     // Adding requests to user_data
@@ -94,9 +94,9 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
       setPhone("");
       setPurpose("");
       setQuantity(1);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error updating status:", err);
-      alert(err.message);
+      alert(err);
     }
   };
 

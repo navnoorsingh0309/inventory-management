@@ -9,20 +9,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { useToast } from "@/hooks/use-toast";
 
 interface props {
-  user: User;
   category: string;
   isAdmin: boolean;
   isSuperAdmin: boolean;
 }
 
 const ProjectsSection: React.FC<props> = ({
-  user,
   category,
   isAdmin,
   isSuperAdmin,
 }) => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -38,8 +35,6 @@ const ProjectsSection: React.FC<props> = ({
           "BoST",
           ...AdminsData.map((admin: Admin) => admin.category),
         ];
-
-        setCategories(newCategories); // Update state
 
         // Fetch inventory **after** categories are set
         const projectsData = await Promise.all(
@@ -67,7 +62,7 @@ const ProjectsSection: React.FC<props> = ({
   // Deleting Project
   const deleteProject = async (project: Project) => {
     try {
-      const response = await fetch("/api/projects", {
+      await fetch("/api/projects", {
         method: "DELETE",
         body: JSON.stringify({
           category: project.category,
@@ -89,7 +84,7 @@ const ProjectsSection: React.FC<props> = ({
   // Deleting Project
   const completedProject = async (project: Project) => {
     try {
-      const response = await fetch("/api/projects", {
+      await fetch("/api/projects", {
         method: "PUT",
         body: JSON.stringify({
           category: project.category,
@@ -109,7 +104,7 @@ const ProjectsSection: React.FC<props> = ({
 
   return (
     <div className="p-8">
-      {(isAdmin || isSuperAdmin) && <AddProjectButton category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />}
+      {(isAdmin || isSuperAdmin) && <AddProjectButton category={category} isSuperAdmin={isSuperAdmin} />}
       {loading ? (
         <div className="w-full flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>

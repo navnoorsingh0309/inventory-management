@@ -60,7 +60,6 @@ const InventoryPage = async () => {
     <div className="mt-10 mx-5 rounded-xl p-3 shadow-lg border border-gray-200 relative mb-5">
       {(isAdmin || isSuperAdmin) && (
         <AddInventoryButton
-          user={curUser}
           category={category}
           isSuperAdmin={isSuperAdmin}
         />

@@ -41,7 +41,7 @@ export async function PUT(req) {
     const document = await req.json();
     const database = client.db(document.category);
     const collection = database.collection("Projects");
-    const result = await collection.updateOne(
+    await collection.updateOne(
       { _id: new ObjectId(document._id) },
       { $set: { completed: true, endDate: new Date().toISOString() } }
     );

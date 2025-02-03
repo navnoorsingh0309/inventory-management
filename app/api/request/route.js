@@ -41,7 +41,7 @@ export async function PUT(req) {
     const database = client.db(document.category);
     const collection = database.collection("Requests");
     if (document.task === 0) {
-      const result = await collection.updateOne(
+      await collection.updateOne(
         { _id: new ObjectId(document._id) },
         {
           $set: {
@@ -50,7 +50,7 @@ export async function PUT(req) {
         }
       );
     } else if (document.task === 1) {
-      const result = await collection.updateOne(
+      await collection.updateOne(
         { _id: new ObjectId(document._id) },
         { $set: { returned: true, returnedProject: document.returnedProject } }
       );

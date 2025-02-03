@@ -50,7 +50,7 @@ const ProjectsPage = async () => {
     category = "BoST";
   }
 
-  return <ProjectsSection user={curUser} category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin}/>;
+  return <ProjectsSection category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin}/>;
 };
 
 export default ProjectsPage;

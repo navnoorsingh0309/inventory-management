@@ -62,7 +62,7 @@ const CoSuperAdminsCard = () => {
     }
   };
 
-  const formSubmitHandler = (e: any) => {
+  const formSubmitHandler = () => {
     addAdmin();
   };
   const handleDelete = (_id: string) => {
