@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Admin } from "@/models/models";
-import { Project, User } from "@/models/models";
+import { Project } from "@/models/models";
 import AddProjectButton from "./addProjectButton";
 import { IconCircleDashedCheck, IconTrash } from "@tabler/icons-react";
 import { Button } from "./ui/button";

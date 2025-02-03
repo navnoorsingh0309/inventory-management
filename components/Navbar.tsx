@@ -8,7 +8,7 @@ import { SignOutButton } from "@clerk/nextjs";
 import Hamburger_Menu from "./ui/HamburgerMenu";
 import { IconUserFilled } from "@tabler/icons-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Admin, User } from "@/models/models";
+import { Admin } from "@/models/models";
 
 interface Props {
   email: string;

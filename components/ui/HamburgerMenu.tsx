@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./menu.css";
 import { SignOutButton } from "@clerk/nextjs";
 import { Button } from "./button";
-import { User } from "@/models/models";
 
 interface Props {
   email: string;
