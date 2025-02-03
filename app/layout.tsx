@@ -9,8 +9,6 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
 import { currentUser } from "@clerk/nextjs/server";
-import { User } from "@/models/models";
-// import Footer from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +38,8 @@ export default async function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-pink-100 via-blue-100 to-purple-100`}
         >
           <Provider>
-            <NavBar superAdmin={process.env.SUPER_ADMIN!} email={user?.primaryEmailAddress?.emailAddress!} firstName={user?.firstName!}/>
+            <NavBar superAdmin={process.env.SUPER_ADMIN!} email={user?.primaryEmailAddress?.emailAddress ?? ""}
+ firstName={user?.firstName ?? ""}/>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             {children}
             <Toaster />
