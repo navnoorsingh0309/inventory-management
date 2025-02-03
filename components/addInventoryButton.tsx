@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import { useState } from "react";
-import { User } from "@/models/models";
 import SuperAdminInventoryCategoryCombo from "./InventoryPage/superAdminInventoryCategory";
 
 interface Props {

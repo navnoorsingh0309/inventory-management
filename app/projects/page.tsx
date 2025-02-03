@@ -5,10 +5,11 @@ import React from "react";
 
 const ProjectsPage = async () => {
   const user = await currentUser();
+
   const curUser: User = {
-    id: user?.id!,
-    name: user?.fullName!,
-    email: user?.primaryEmailAddress?.emailAddress!,
+    id: user?.id ?? "",
+    name: user?.fullName ?? "Unknown User",
+    email: user?.primaryEmailAddress?.emailAddress ?? "",
   };
 
   let isAdmin = false,
@@ -50,7 +51,13 @@ const ProjectsPage = async () => {
     category = "BoST";
   }
 
-  return <ProjectsSection category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin}/>;
+  return (
+    <ProjectsSection
+      category={category}
+      isAdmin={isAdmin}
+      isSuperAdmin={isSuperAdmin}
+    />
+  );
 };
 
 export default ProjectsPage;

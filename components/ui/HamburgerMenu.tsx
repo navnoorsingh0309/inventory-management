@@ -5,14 +5,14 @@ import { Button } from "./button";
 import { User } from "@/models/models";
 
 interface Props {
-  user: User;
+  email: string;
   superAdmin: string;
   isAdmin: boolean;
   isSuperAdmin: boolean;
 }
 
 const Hamburger_Menu: React.FC<Props> = ({
-  user,
+  email,
   superAdmin,
   isAdmin,
   isSuperAdmin,
@@ -33,7 +33,7 @@ const Hamburger_Menu: React.FC<Props> = ({
       {showMenu && (
         <div className="fixed animate-in slide-in-from-top-5 slide-out-to-top-5 z-0 w-6/12 right-0 h-full pr-2">
           <ul className="absolute text-right text-xl font-black bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-10 pb-8">
-            {user.email === superAdmin && (
+            {email === superAdmin && (
               <li>
                 <a href="/admin">Admin Portal</a>
               </li>

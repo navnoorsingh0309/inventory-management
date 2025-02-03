@@ -5,7 +5,7 @@ import { Tabs } from "@chakra-ui/react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { format } from "date-fns";
-import { Component, Project, Request, User } from "@/models/models";
+import { Component, Project, Request } from "@/models/models";
 import { useToast } from "@/hooks/use-toast";
 import MarkAsReturnButton from "./markAsReturnButton";
 

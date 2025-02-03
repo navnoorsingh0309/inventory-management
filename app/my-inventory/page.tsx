@@ -5,15 +5,15 @@ import React from "react";
 
 const page = async () => {
   const user = await currentUser();
-  
-    const curUser: User = {
-      id: user?.id!,
-      name: user?.fullName!,
-      email:user?.primaryEmailAddress?.emailAddress!
-    }
+
+  const curUser: User = {
+    id: user?.id ?? "",
+    name: user?.fullName ?? "Unknown User",
+    email: user?.primaryEmailAddress?.emailAddress ?? "",
+  };
   return (
     <div className="p-6 rounded-lg shadow-lg border border-gray-200">
-      <MyInventory user={curUser}/>
+      <MyInventory user={curUser} />
     </div>
   );
 };

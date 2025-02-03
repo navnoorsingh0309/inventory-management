@@ -11,11 +11,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Admin, User } from "@/models/models";
 
 interface Props {
-  user: User;
+  email: string;
+  firstName: string;
   superAdmin: string;
 }
 
-const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
+const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
@@ -28,7 +29,7 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
         const resJson = await res.json();
         const adminIdsJson = resJson.admins as Admin[];
         adminIdsJson.map((admin: Admin) => {
-          if (user.email == admin.email) {
+          if (email == admin.email) {
             setIsAdmin(true);
           }
         });
@@ -43,11 +44,11 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
         const resJson = await res.json();
         const adminIdsJson = resJson.admins as Admin[];
         const adminIds = adminIdsJson.map((admin: Admin) => admin.email);
-        setIsSuperAdmin(adminIds.includes(user.email));
+        setIsSuperAdmin(adminIds.includes(email));
       } catch (err) {
         console.error("Error fetching Admins:", err);
       }
-      if (user.email === superAdmin) {
+      if (email === superAdmin) {
         setIsAdmin(true);
         setIsSuperAdmin(true);
       }
@@ -71,7 +72,7 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
           </div>
 
           <div className="items-center space-x-4 sm:flex">
-            {user.id ? null : (
+            {email ? null : (
               <Button
                 variant={"ghost"}
                 asChild
@@ -83,17 +84,17 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
               </Button>
             )}
 
-            {user.id ? null : (
+            {email ? null : (
               <span
                 className="h-6 w-px bg-gray-200 hidden sm:flex"
                 aria-hidden="true"
               />
             )}
 
-            {user.id ? (
+            {email ? (
               <div className="flex h-full items-center gap-1 space-x-4">
                 <div className="hidden md:flex h-full items-center justify-center space-x-1">
-                  {(user.email === superAdmin) && (
+                  {(email === superAdmin) && (
                     <Button
                       variant={"ghost"}
                       asChild
@@ -162,7 +163,7 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
                     </PopoverTrigger>
                     <PopoverContent className="w-80 bg-white border border-gray-300 rounded-lg shadow-md p-4">
                       <h1 className="text-lg font-semibold text-gray-800 mb-4 items-center space-x-2">
-                        <span>Welcome, {user.name}!</span>
+                        <span>Welcome, {firstName}!</span>
                         <span className="animate-wave">👋</span>
                       </h1>
                       <SignOutButton>
@@ -173,7 +174,7 @@ const NavBar: React.FC<Props> = ({ superAdmin, user }) => {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <Hamburger_Menu user={user} superAdmin={superAdmin} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />
+                <Hamburger_Menu email={email} superAdmin={superAdmin} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />
               </div>
             ) : (
               <Button className="hidden sm:flex" asChild>

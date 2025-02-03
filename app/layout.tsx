@@ -33,11 +33,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await currentUser();
-  const curUser: User = {
-    id: user?.id! ?? null,
-    name: user?.fullName! ?? null,
-    email: user?.primaryEmailAddress?.emailAddress! ?? null,
-  };
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -45,7 +40,7 @@ export default async function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-pink-100 via-blue-100 to-purple-100`}
         >
           <Provider>
-            <NavBar superAdmin={process.env.SUPER_ADMIN!} user={curUser}/>
+            <NavBar superAdmin={process.env.SUPER_ADMIN!} email={user?.primaryEmailAddress?.emailAddress!} firstName={user?.firstName!}/>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             {children}
             <Toaster />
