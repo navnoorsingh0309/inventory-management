@@ -99,7 +99,7 @@ const SignUpPage = () => {
   };
 
   // Verify User Email Code
-  const onPressVerify = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onPressVerify = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!isLoaded) {
       return;
