@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import { SignOutButton } from "@clerk/nextjs";
 import Hamburger_Menu from "./ui/HamburgerMenu";
 import { IconUserFilled } from "@tabler/icons-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Admin } from "@/models/models";
+import { Admin, SuperAdmin } from "@/models/models";
 
 interface Props {
   email: string;
@@ -19,7 +18,6 @@ interface Props {
 const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-
   useEffect(() => {
     const getAdmins = async () => {
       try {
@@ -42,9 +40,13 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
           cache: "no-store",
         });
         const resJson = await res.json();
-        const adminIdsJson = resJson.admins as Admin[];
-        const adminIds = adminIdsJson.map((admin: Admin) => admin.email);
-        setIsSuperAdmin(adminIds.includes(email));
+        const adminIdsJson = resJson.admins as SuperAdmin[];
+        const adminIds = adminIdsJson.map((admin: SuperAdmin) => admin.email);
+        adminIds.map((admin: string) => {
+          if (email == admin) {
+            setIsSuperAdmin(true);
+          }
+        })
       } catch (err) {
         console.error("Error fetching Admins:", err);
       }
@@ -129,7 +131,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                       Projects
                     </Link>
                   </Button>
-                  {!isAdmin && (
+                  {(!isAdmin && (email !== superAdmin)) && (
                     <Button
                       variant={"ghost"}
                       asChild

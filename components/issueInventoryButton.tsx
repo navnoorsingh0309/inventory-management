@@ -38,6 +38,13 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
       insertedId: string;
     }
     let reqId;
+
+    if (!date)
+    {
+      alert("Please select a returning date!!!");
+      return;
+    }
+
     // Issue Inventory Request
     try {
       const res = await fetch(`/api/request`, {
