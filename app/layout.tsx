@@ -39,11 +39,10 @@ export default async function RootLayout({
         >
           <Provider>
             <NavBar superAdmin={process.env.SUPER_ADMIN!} email={user?.primaryEmailAddress?.emailAddress ?? ""}
- firstName={user?.firstName ?? ""}/>
+                          firstName={user?.firstName ?? ""}/>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             {children}
             <Toaster />
-            {/* <Footer/> */}
           </Provider>
         </body>
       </html>
