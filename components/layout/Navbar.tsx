@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "../MaxWidthWrapper";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { SignOutButton } from "@clerk/nextjs";
-import Hamburger_Menu from "./ui/HamburgerMenu";
+import Hamburger_Menu from "../ui/HamburgerMenu";
 import { IconUserFilled } from "@tabler/icons-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Admin, SuperAdmin } from "@/models/models";
 
 interface Props {
