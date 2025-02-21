@@ -34,12 +34,13 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-pink-100 via-blue-100 to-purple-100`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <Provider>
-            <NavBar superAdmin={process.env.SUPER_ADMIN!} email={user?.primaryEmailAddress?.emailAddress ?? ""}
-                          firstName={user?.firstName ?? ""}/>
+            <NavBar
+              superAdmin={process.env.SUPER_ADMIN!}
+              email={user?.primaryEmailAddress?.emailAddress ?? ""}
+              firstName={user?.firstName ?? ""}
+            />
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             {children}
             <Toaster />

@@ -32,7 +32,6 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
   };
 
   const updateInventory = async () => {
-    // Updating Inventory
     try {
       const response = await fetch(`/api/inventory`, {
         method: "PUT",

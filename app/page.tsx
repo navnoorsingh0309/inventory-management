@@ -1,12 +1,13 @@
-export default function Home() {
+import HeroSection from "@/components/landingpage/HeroSection";
+import FeaturesSecton from "@/components/landingpage/FeaturesSecton";
+import CallToAction from "@/components/landingpage/CallToAction";
+
+export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-center">
-        <img
-          src="/bost.png"
-          alt="BoST Logo"
-          className="h-40 mx-auto mt-10"
-        />
-        <h1 className="text-black text-6xl text-center font-bold mt-3 w-1/2">Inventory Management Portal</h1>
+    <div className="min-h-screen bg-background">
+      <HeroSection/> 
+      <FeaturesSecton/>
+      <CallToAction/>
     </div>
   );
 }
