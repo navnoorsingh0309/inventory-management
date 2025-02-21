@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { UserDataSlice } from './features/userdata/UserDataSlice'
+// import { UserDataSlice } from './features/userdata/UserDataSlice'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-        userData: UserDataSlice
+        // userData: UserDataSlice
     }
   })
 }

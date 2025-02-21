@@ -9,7 +9,8 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
 import { currentUser } from "@clerk/nextjs/server";
-import StoreProvider from "./StoreProvider";
+import AnimatedBackground from "@/components/AnimatedBackground";
+// import StoreProvider from "./StoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,11 +34,10 @@ export default async function RootLayout({
 }>) {
   const user = await currentUser();
   return (
-    <StoreProvider>
+    // <StoreProvider>
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
-            <Provider>
               <NavBar
                 superAdmin={process.env.SUPER_ADMIN!}
                 email={user?.primaryEmailAddress?.emailAddress ?? ""}
@@ -46,12 +46,12 @@ export default async function RootLayout({
               <NextSSRPlugin
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />
+              <AnimatedBackground/>
               {children}
               <Toaster />
-            </Provider>
           </body>
         </html>
       </ClerkProvider>
-    </StoreProvider>
+    // </StoreProvider>
   );
 }
