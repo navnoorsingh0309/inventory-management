@@ -6,8 +6,8 @@ import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import Link from "next/link";
 
-const AuthTabSystem = () => {
-  const [activeTab, setActiveTab] = useState("signin");
+const AuthTabSystem = ({ tab }: { tab: string }) => {
+  const [activeTab, setActiveTab] = useState(tab);
 
   return (
     <motion.div
@@ -16,7 +16,6 @@ const AuthTabSystem = () => {
       transition={{ duration: 0.5 }}
       className="w-full max-w-md px-4 z-10"
     >
-      {/* Logo */}
       <div className="flex justify-center mb-8 w-full">
         <Link href="/" className="flex items-center gap-2 w-full justify-center">
           <img src="bost.png" className="h-12 w-12 text-primary" />

@@ -38,6 +38,7 @@ export default async function RootLayout({
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <Provider>
               <NavBar
                 superAdmin={process.env.SUPER_ADMIN!}
                 email={user?.primaryEmailAddress?.emailAddress ?? ""}
@@ -49,6 +50,7 @@ export default async function RootLayout({
               <AnimatedBackground/>
               {children}
               <Toaster />
+            </Provider>
           </body>
         </html>
       </ClerkProvider>

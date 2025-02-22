@@ -1,115 +1,195 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { LogIn, UserPlus } from "lucide-react";
+import { CheckCheck, Loader2, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SignUpSchema } from "@/lib/auth/validation";
+import { useSignUp, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { PinInput } from "../ui/pin-input";
+import { ToastAction } from "@radix-ui/react-toast";
 
-const signUpSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+type User = {
+  first_name: string;
+  last_name: string;
+  email_address: string;
+  password: string;
+};
 
-const SignUpForm = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) => {
-  const signUpForm = useForm({
-    resolver: zodResolver(signUpSchema),
+const SignUpForm = ({
+  setActiveTab,
+}: {
+  setActiveTab: (tab: string) => void;
+}) => {
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [email, setEmail] = useState("");
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      name: "",
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
+  const router = useRouter();
+  const { user } = useUser();
+  const [bError, setBError] = useState("");
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/inventory");
+    }
+  }, [user, router]);
+
+  const handleSignUp = async (data: any) => {
+    console.log("in");
+    if (!isLoaded) return;
+    setLoading(true);
+    const user: User = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email_address: data.email!,
+      password: data.password,
+    };
+    console.log("in2");
+
+    try {
+      console.log("in3");
+      await signUp.create(user);
+
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      setEmail(data.email);
+      setPendingVerification(true);
+    } catch (err: any) {
+      setBError("Signup failed!");
+      setLoading(false);
+    }
+  };
+
+  const handleVerify = async () => {
+    if (!isLoaded) {
+      return;
+    }
+    setLoading(true);
+    await signUp
+      .attemptEmailAddressVerification({
+        code: code.join(""),
+      })
+      .then(async (completeSignUp) => {
+        if (completeSignUp.status !== "complete") {
+          console.log(JSON.stringify(completeSignUp, null, 2));
+        }
+        if (completeSignUp.status === "complete") {
+          toast({
+            title: "Acount Created Successfully! ",
+            action: <ToastAction altText="Ok">Ok</ToastAction>,
+          });
+          await setActive({ session: completeSignUp.createdSessionId });
+          router.push("/inventory");
+        }
+      })
+      .catch((err) => {
+        setBError(err.message);
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   return (
     <Card>
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
-        <CardDescription>
-          Create an account to access the BoST Inventory Management Portal
-        </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          className="space-y-4"
-        >
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              placeholder="Enter your name"
-              {...signUpForm.register("name")}
-            />
-            {signUpForm.formState.errors.name && (
-              <p className="text-sm text-destructive">
-                {signUpForm.formState.errors.name.message}
-              </p>
-            )}
+        {pendingVerification ? (
+          <div className="space-y-4 text-center w-full">
+            <Label>A verification code has been sent to {email}</Label>
+            <PinInput value={code} onValueChange={(e) => setCode(e.value)} />
+            <Button onClick={handleVerify} disabled={loading}>
+              {loading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <CheckCheck className="w-4 h-4 mr-2" />
+              )}
+              {loading ? "Verifying..." : "Verify"}
+            </Button>
+            {bError && <p className="text-red-600">{bError}</p>}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              {...signUpForm.register("email")}
-            />
-            {signUpForm.formState.errors.email && (
-              <p className="text-sm text-destructive">
-                {signUpForm.formState.errors.email.message}
-              </p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Create a password"
-              {...signUpForm.register("password")}
-            />
-            {signUpForm.formState.errors.password && (
-              <p className="text-sm text-destructive">
-                {signUpForm.formState.errors.password.message}
-              </p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              placeholder="Confirm your password"
-              {...signUpForm.register("confirmPassword")}
-            />
-            {signUpForm.formState.errors.confirmPassword && (
-              <p className="text-sm text-destructive">
-                {signUpForm.formState.errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
-          <Button type="submit" className="w-full">
-            <UserPlus className="w-4 h-4 mr-2" />
-            Sign Up
-          </Button>
-        </form>
+        ) : (
+          <form
+            onSubmit={handleSubmit((data) => handleSignUp(data))}
+            className="space-y-4"
+          >
+            {/* First Name & Last Name */}
+            <div className="grid grid-cols-2 space-x-2">
+              <div className="space-y-2">
+                <Label htmlFor="firstname">First Name</Label>
+                <Input id="firstname" {...register("firstname")} />
+                {errors.firstname && (
+                  <p className="text-red-600">{errors.firstname.message}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastname">Last Name</Label>
+                <Input id="lastname" {...register("lastname")} />
+                {errors.lastname && (
+                  <p className="text-red-600">{errors.lastname.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Email */}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
+              {errors.email && (
+                <p className="text-red-600">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
+              {errors.password && (
+                <p className="text-red-600">{errors.password.message}</p>
+              )}
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <UserPlus className="w-4 h-4 mr-2" />
+              )}
+              {loading ? "Signing Up..." : "Sign Up"}
+            </Button>
+
+            {bError && <p className="text-red-600 text-center">{bError}</p>}
+          </form>
+        )}
       </CardContent>
       <CardFooter>
         <Button

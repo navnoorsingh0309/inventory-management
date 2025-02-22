@@ -29,7 +29,7 @@ const HeroSection = () => {
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
               <Button size="lg" className="inline-flex gap-2" asChild>
-                <Link href="/sign-up">
+                <Link href="/auth?v=signup">
                   Get Started <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>

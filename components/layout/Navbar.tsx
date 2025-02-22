@@ -80,7 +80,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                 asChild
                 className="border-[color:var(--secondary-500)] border sm:border-0"
               >
-                <Link href="/sign-in" className="text-lg font-bold">
+                <Link href="/auth?v=signin" className="text-lg font-bold">
                   Sign In
                 </Link>
               </Button>
@@ -180,7 +180,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
               </div>
             ) : (
               <Button className="hidden sm:flex" asChild>
-                <Link href="/sign-up" className="text-lg font-bold">
+                <Link href="/auth?v=signup" className="text-lg font-bold">
                   Let&apos;s get started
                 </Link>
               </Button>
