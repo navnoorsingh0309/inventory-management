@@ -62,28 +62,28 @@ const SignUpForm = ({
     }
   }, [user, router]);
 
-  const handleSignUp = async (data: any) => {
-    console.log("in");
+  const handleSignUp = async (firstName: string, lastName: string, email: string, password: string) => {
+    setBError("");
     if (!isLoaded) return;
     setLoading(true);
     const user: User = {
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email_address: data.email!,
-      password: data.password,
+      first_name: firstName,
+      last_name: lastName,
+      email_address: email!,
+      password: password,
     };
-    console.log("in2");
-
     try {
-      console.log("in3");
+      
       await signUp.create(user);
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
-      setEmail(data.email);
+      setEmail(email);
       setPendingVerification(true);
     } catch (err: any) {
       setBError("Signup failed!");
+      setLoading(false);
+    } finally {
       setLoading(false);
     }
   };
@@ -113,9 +113,6 @@ const SignUpForm = ({
       .catch((err) => {
         setBError(err.message);
         setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
   return (
@@ -140,7 +137,7 @@ const SignUpForm = ({
           </div>
         ) : (
           <form
-            onSubmit={handleSubmit((data) => handleSignUp(data))}
+            onSubmit={handleSubmit((data) => handleSignUp(data.firstname, data.lastname, data.email, data.password))}
             className="space-y-4"
           >
             {/* First Name & Last Name */}

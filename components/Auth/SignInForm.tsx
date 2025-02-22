@@ -117,7 +117,7 @@ const SignInForm = ({
           onClick={() => setActiveTab("signup")}
           disabled={loading}
         >
-          Don't have an account? Sign Up
+          Don&apos;t have an account? Sign Up
         </Button>
       </CardFooter>
     </Card>
