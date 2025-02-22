@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import { useState } from "react";
-import SuperAdminInventoryCategoryCombo from "./InventoryPage/superAdminInventoryCategory";
+import SuperAdminInventoryCategoryCombo from "./superAdminInventoryCategory";
 
 interface Props {
   category: string;

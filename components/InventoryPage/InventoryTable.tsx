@@ -18,13 +18,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { IconTrash } from "@tabler/icons-react";
 import InventoryInfoButton from "./inventoryInfoButton";
 import { useToast } from "@/hooks/use-toast";
 import AddInventoryButton from "./addInventoryButton";
 import { AnimatePresence, motion } from "framer-motion";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 
 interface Props {

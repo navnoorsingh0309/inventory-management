@@ -1,4 +1,4 @@
-import InventoryTable from "@/components/InventoryTable";
+import InventoryTable from "@/components/InventoryPage/InventoryTable";
 import { Admin, User } from "@/models/models";
 import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
