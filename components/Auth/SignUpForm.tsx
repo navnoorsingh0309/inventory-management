@@ -80,8 +80,12 @@ const SignUpForm = ({
 
       setEmail(email);
       setPendingVerification(true);
-    } catch (err: any) {
-      setBError("Signup failed!");
+    } catch (err) {
+      if (err instanceof Error) {
+        setBError(err.message);
+      } else {
+        setBError("An unknown error occurred");
+      }
       setLoading(false);
     } finally {
       setLoading(false);
