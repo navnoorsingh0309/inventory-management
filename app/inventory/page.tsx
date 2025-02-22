@@ -1,4 +1,3 @@
-import AddInventoryButton from "@/components/addInventoryButton";
 import InventoryTable from "@/components/InventoryTable";
 import { Admin, User } from "@/models/models";
 import { currentUser } from "@clerk/nextjs/server";
@@ -58,12 +57,6 @@ const InventoryPage = async () => {
 
   return (
     <div className="mt-10 mx-5 rounded-xl p-3 shadow-lg border border-gray-200 relative mb-5">
-      {(isAdmin || isSuperAdmin) && (
-        <AddInventoryButton
-          category={category}
-          isSuperAdmin={isSuperAdmin}
-        />
-      )}
       <InventoryTable user={curUser} category={category} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />
     </div>
   );

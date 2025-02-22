@@ -22,6 +22,10 @@ import { Button } from "./ui/button";
 import { IconTrash } from "@tabler/icons-react";
 import InventoryInfoButton from "./inventoryInfoButton";
 import { useToast } from "@/hooks/use-toast";
+import AddInventoryButton from "./addInventoryButton";
+import { AnimatePresence, motion } from "framer-motion";
+import { Input } from "./ui/input";
+import { Search } from "lucide-react";
 
 interface Props {
   user: User;
@@ -39,6 +43,8 @@ const InventoryTable: React.FC<Props> = ({
   const [inventory, setInventory] = useState<Component[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState<Component[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -63,8 +69,11 @@ const InventoryTable: React.FC<Props> = ({
           const res = await fetch("/api/admin");
           const data = await res.json();
           const AdminsData = data.admins;
-          const newCategories = ["BoST", ...AdminsData.map((admin: Admin) => admin.category)];
-      
+          const newCategories = [
+            "BoST",
+            ...AdminsData.map((admin: Admin) => admin.category),
+          ];
+
           // Fetch inventory **after** categories are set
           const inventoryData = await Promise.all(
             newCategories.map(async (category) => {
@@ -76,7 +85,7 @@ const InventoryTable: React.FC<Props> = ({
               return data.inventory;
             })
           );
-      
+
           setInventory(inventoryData.flat());
         } catch (err) {
           console.error("Error fetching data:", err);
@@ -89,6 +98,13 @@ const InventoryTable: React.FC<Props> = ({
 
     fetchInventory();
   }, []);
+  useEffect(() => {
+    setFilteredData(
+      inventory.filter((item) =>
+        item.component.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [inventory, searchTerm]);
 
   // Real time changes
   const removeBlock = (id: string) => {
@@ -111,7 +127,7 @@ const InventoryTable: React.FC<Props> = ({
       });
       await response.json();
       removeBlock(id);
-      toast({title: "Deleted!!"})
+      toast({ title: "Deleted!!" });
     } catch (err) {
       console.error("Error updating status:", err);
       alert(err);
@@ -131,78 +147,113 @@ const InventoryTable: React.FC<Props> = ({
   }
 
   return (
-    <Table>
-      <TableCaption>A list of your inventory.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Image</TableHead>
-          <TableHead>Component</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>In Stock</TableHead>
-          <TableHead>In Use</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {inventory.map((item: Component) => (
-          <TableRow key={item._id}>
-            <TableCell className="w-[100px]">
-              <img
-                src={`https://utfs.io/f/${item.image}`}
-                alt={item.component}
-                className="w-10 h-10 rounded-full"
-              />
-            </TableCell>
-            <TableCell className="font-medium w-[300px]">
-              {item.component}
-            </TableCell>
-            <TableCell>{item.category}</TableCell>
-            <TableCell>{item.inStock}</TableCell>
-            <TableCell>{item.inUse}</TableCell>
-            <TableCell className="text-right space-x-2">
-              {isAdmin || isSuperAdmin ? (
-                <div className="flex space-x-2 justify-end">
-                  <InventoryInfoButton component={item} />
-                  <EditInventoryButton component={item} category={category} />
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button className="bg-red-700">
-                        <IconTrash />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                      <div className="grid gap-4">
-                        <div className="space-y-2">
-                          <h4 className="font-medium leading-none">
-                            Delete this Inventory
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Are your sure want to delete this Inventory?
-                          </p>
-                        </div>
-                        <div className="grid gap-2">
-                          <Button
-                            onClick={() => {
-                              deleteInventory(item._id, item.category);
-                            }}
-                          >
-                            Yes
-                          </Button>
-                          <Button>No</Button>
-                        </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                  {/*dsafjaksfj*/}
-                </div>
-              ) : (
-                <IssueInventoryButton component={item} user={user} />
-              )}
-            </TableCell>
+    <>
+      <div className="flex justify-between">
+        <div className="flex items-center justify-between">
+          <div className="flex w-full max-w-sm items-center space-x-2">
+            <Input
+              placeholder="Search items..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full"
+            />
+            <Search className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </div>
+        {(isAdmin || isSuperAdmin) && (
+          <AddInventoryButton category={category} isSuperAdmin={isSuperAdmin} />
+        )}
+      </div>
+      <Table>
+        <TableCaption>A list of your inventory.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Image</TableHead>
+            <TableHead>Component</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>In Stock</TableHead>
+            <TableHead>In Use</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          <AnimatePresence>
+            {filteredData.map((item: Component) => (
+              <motion.tr
+                key={item._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+                className="group"
+              >
+                <TableCell className="w-[100px]">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="relative h-12 w-12 rounded-md overflow-hidden"
+                  >
+                    <img
+                      src={`https://utfs.io/f/${item.image}`}
+                      alt={item.component}
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </motion.div>
+                </TableCell>
+                <TableCell className="font-medium w-[300px]">
+                  {item.component}
+                </TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.inStock}</TableCell>
+                <TableCell>{item.inUse}</TableCell>
+                <TableCell className="text-right space-x-2">
+                  <div className="flex space-x-2 justify-end">
+                    {(isAdmin || isSuperAdmin) && (
+                      <>
+                        <InventoryInfoButton component={item} />
+                        <EditInventoryButton
+                          component={item}
+                          category={category}
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button className="bg-red-700">
+                              <IconTrash />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-80">
+                            <div className="grid gap-4">
+                              <div className="space-y-2">
+                                <h4 className="font-medium leading-none">
+                                  Delete this Inventory
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Are your sure want to delete this Inventory?
+                                </p>
+                              </div>
+                              <div className="grid gap-2">
+                                <Button
+                                  onClick={() => {
+                                    deleteInventory(item._id, item.category);
+                                  }}
+                                >
+                                  Yes
+                                </Button>
+                                <Button>No</Button>
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </>
+                    )}
+                    <IssueInventoryButton component={item} user={user} />
+                  </div>
+                </TableCell>
+              </motion.tr>
+            ))}
+          </AnimatePresence>
+        </TableBody>
+      </Table>
+    </>
   );
 };
 
