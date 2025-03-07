@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { User, UserInventory } from "@/models/models";
+import { UserInventory } from "@/models/models";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 

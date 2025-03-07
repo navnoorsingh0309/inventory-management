@@ -28,7 +28,8 @@ const LoadStore: React.FC<props> = ({ superAdmin }) => {
       dispatch(setId(user.id));
       dispatch(setFirstName(user.firstName!));
       dispatch(setLastName(user.lastName!));
-      dispatch(setEmail(user.primaryEmailAddress?.emailAddress!));
+      if (user && user.primaryEmailAddress)
+        dispatch(setEmail(user.primaryEmailAddress.emailAddress!));
       dispatch(setRole(role));
       dispatch(setCategory(category));
     }

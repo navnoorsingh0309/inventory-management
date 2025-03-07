@@ -41,8 +41,9 @@ const LoadAdminData: React.FC<props> = ({
         const resJson = await res.json();
         const adminIdsJson = resJson.admins as Admin[];
         const adminIds = adminIdsJson.map((admin: Admin) => admin.email);
+        if (!user || !user.primaryEmailAddress) return;
         setIsCoSuperAdmin(
-          adminIds.includes(user!.primaryEmailAddress?.emailAddress!)
+          adminIds.includes(user.primaryEmailAddress.emailAddress!)
         );
       } catch (err) {
         console.error("Error fetching Admins:", err);
@@ -50,7 +51,7 @@ const LoadAdminData: React.FC<props> = ({
     };
 
     if (user) {
-      if (user!.primaryEmailAddress?.emailAddress! === superAdmin) {
+      if (user && user.primaryEmailAddress && user.primaryEmailAddress.emailAddress === superAdmin) {
         setRole(3);
         return;
       }

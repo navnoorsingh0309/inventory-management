@@ -8,7 +8,6 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
-import { currentUser } from "@clerk/nextjs/server";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import StoreProvider from "./StoreProvider";
 import LoadStore from "@/components/Redux/loadStore";
@@ -33,7 +32,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await currentUser();
   return (
     <StoreProvider>
       <ClerkProvider>

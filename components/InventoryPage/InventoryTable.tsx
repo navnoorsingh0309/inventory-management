@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import IssueInventoryButton from "./issueInventoryButton";
 import EditInventoryButton from "./editInventoryButton";
-import { Admin, Component, User } from "@/models/models";
+import { Admin, Component } from "@/models/models";
 import {
   Popover,
   PopoverContent,
