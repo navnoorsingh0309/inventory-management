@@ -4,24 +4,17 @@ import { Admin } from "@/models/models";
 import { Project } from "@/models/models";
 import AddProjectButton from "./addProjectButton";
 import { IconCircleDashedCheck, IconTrash } from "@tabler/icons-react";
-import { Button } from "./ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useToast } from "@/hooks/use-toast";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-interface props {
-  category: string;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-}
-
-const ProjectsSection: React.FC<props> = ({
-  category,
-  isAdmin,
-  isSuperAdmin,
-}) => {
+const ProjectsSection = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const user = useSelector((state: RootState) => state.UserData.user);
 
   // Fetch projects from API
   useEffect(() => {
@@ -104,7 +97,7 @@ const ProjectsSection: React.FC<props> = ({
 
   return (
     <div className="p-8">
-      {(isAdmin || isSuperAdmin) && <AddProjectButton category={category} isSuperAdmin={isSuperAdmin} />}
+      {user.role!==0 && <AddProjectButton category={user.category} isSuperAdmin={(user.role === 3)} />}
       {loading ? (
         <div className="w-full flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
@@ -125,7 +118,7 @@ const ProjectsSection: React.FC<props> = ({
               <div className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-900 flex items-center justify-between">
                   {project.title}
-                  {(isAdmin || isSuperAdmin) && (
+                  {user.role !== 0 && (
                     <div className="space-x-3 flex items-center">
                       {project.completed === false && (
                         <button

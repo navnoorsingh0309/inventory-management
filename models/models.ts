@@ -1,7 +1,10 @@
 export type User = {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
+    role: number;
+    category: string;
 }
 export type Usage = {
     _id: string;

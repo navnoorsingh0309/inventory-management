@@ -29,32 +29,19 @@ import { Search } from "lucide-react";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 
-interface Props {
-  user: User;
-  category: string;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-}
-
-const InventoryTable: React.FC<Props> = ({
-  user,
-  category,
-  isAdmin,
-  isSuperAdmin,
-}) => {
+const InventoryTable = () => {
   const [inventory, setInventory] = useState<Component[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<Component[]>([]);
+  const user = useSelector((state: RootState) => state.UserData.user);
   const { toast } = useToast();
-  const userId = useSelector((state: RootState) => state.UserData.id);
-  alert(userId.toString());
   useEffect(() => {
     const fetchInventory = async () => {
-      if (isAdmin) {
+      if (user.role === 1) {
         try {
-          const response = await fetch(`/api/inventory?pn=${category}`);
+          const response = await fetch(`/api/inventory?pn=${user.category}`);
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -163,8 +150,11 @@ const InventoryTable: React.FC<Props> = ({
             <Search className="h-4 w-4 text-muted-foreground" />
           </div>
         </div>
-        {(isAdmin || isSuperAdmin) && (
-          <AddInventoryButton category={category} isSuperAdmin={isSuperAdmin} />
+        {user.role !== 0 && (
+          <AddInventoryButton
+            category={user.category}
+            isSuperAdmin={user.role === 3}
+          />
         )}
       </div>
       <Table>
@@ -210,12 +200,12 @@ const InventoryTable: React.FC<Props> = ({
                 <TableCell>{item.inUse}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <div className="flex space-x-2 justify-end">
-                    {(isAdmin || isSuperAdmin) && (
+                    {user.role !== 0 && (
                       <>
                         <InventoryInfoButton component={item} />
                         <EditInventoryButton
                           component={item}
-                          category={category}
+                          category={user.category}
                         />
                         <Popover>
                           <PopoverTrigger asChild>
@@ -248,7 +238,9 @@ const InventoryTable: React.FC<Props> = ({
                         </Popover>
                       </>
                     )}
-                    <IssueInventoryButton component={item} user={user} />
+                    {user.role !== 1 && (
+                      <IssueInventoryButton component={item} user={user} />
+                    )}
                   </div>
                 </TableCell>
               </motion.tr>

@@ -1,22 +1,13 @@
 import React, { useState } from "react";
 import "./menu.css";
 import { SignOutButton } from "@clerk/nextjs";
-import { Button } from "./button";
+import { Button } from "../ui/button";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-interface Props {
-  email: string;
-  superAdmin: string;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-}
-
-const Hamburger_Menu: React.FC<Props> = ({
-  email,
-  superAdmin,
-  isAdmin,
-  isSuperAdmin,
-}) => {
+const Hamburger_Menu = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const user = useSelector((state: RootState) => state.UserData.user);
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
   };
@@ -32,7 +23,7 @@ const Hamburger_Menu: React.FC<Props> = ({
       {showMenu && (
         <div className="fixed animate-in slide-in-from-top-5 slide-out-to-top-5 z-0 w-6/12 right-0 h-full pr-2">
           <ul className="absolute text-right text-xl font-black bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-10 pb-8">
-            {email === superAdmin && (
+            {user.role === 3 && (
               <li>
                 <a href="/admin">Admin Portal</a>
               </li>
@@ -43,12 +34,12 @@ const Hamburger_Menu: React.FC<Props> = ({
             <li>
               <a href="/inventory">Projects</a>
             </li>
-            {!isAdmin && (
+            {(user.role === 0 || user.role === 2) && (
               <li>
                 <a href="/my-inventory">My Inventory</a>
               </li>
             )}
-            {(isAdmin || isSuperAdmin) && (
+            {user.role!==0 && (
               <li>
                 <a href="/requests">Requests</a>
               </li>

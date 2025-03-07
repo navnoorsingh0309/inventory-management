@@ -1,20 +1,20 @@
+import { User } from '@/models/models'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface UserDataState {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  role: number;
+  user: User;
 }
 
 const initialState: UserDataState = {
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    role: 0
+    user: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: 0,
+      category: ""
+    }
 }
 
 export const UserDataSlice = createSlice({
@@ -22,22 +22,25 @@ export const UserDataSlice = createSlice({
   initialState,
   reducers: {
     setId: (state, action: PayloadAction<string>) => {
-      state.id = action.payload
+      state.user.id = action.payload
     },
     setFirstName: (state, action: PayloadAction<string>) => {
-      state.firstName = action.payload
+      state.user.firstName = action.payload
     },
     setLastName: (state, action: PayloadAction<string>) => {
-      state.lastName = action.payload
+      state.user.lastName = action.payload
     },
     setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload
+      state.user.email = action.payload
     },
     setRole: (state, action: PayloadAction<number>) => {
-      state.role = action.payload
+      state.user.role = action.payload
+    },
+    setCategory: (state, action: PayloadAction<string>) => {
+      state.user.category = action.payload
     }
   }
 })
 
-export const { setId, setFirstName, setLastName, setEmail, setRole } = UserDataSlice.actions
+export const { setId, setFirstName, setLastName, setEmail, setRole, setCategory } = UserDataSlice.actions
 export default UserDataSlice.reducer

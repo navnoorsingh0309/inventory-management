@@ -9,7 +9,7 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
 import { currentUser } from "@clerk/nextjs/server";
-import AnimatedBackground from "@/components/AnimatedBackground";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import StoreProvider from "./StoreProvider";
 import LoadStore from "@/components/Redux/loadStore";
 
@@ -39,13 +39,9 @@ export default async function RootLayout({
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
-            <LoadStore/>
+            <LoadStore superAdmin={process.env.SUPER_ADMIN!}/>
             <Provider>
-              <NavBar
-                superAdmin={process.env.SUPER_ADMIN!}
-                email={user?.primaryEmailAddress?.emailAddress ?? ""}
-                firstName={user?.firstName ?? ""}
-              />
+              <NavBar/>
               <NextSSRPlugin
                 routerConfig={extractRouterConfig(ourFileRouter)}
               />

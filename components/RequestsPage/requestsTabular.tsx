@@ -2,20 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { Tabs } from "@chakra-ui/react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { Component, Project, Request } from "@/models/models";
 import { useToast } from "@/hooks/use-toast";
 import MarkAsReturnButton from "./markAsReturnButton";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-interface Props {
-  category: string;
-}
-
-const RequestsTabular: React.FC<Props> = ({
-  category,
-}) => {
+const RequestsTabular = () => {
   const [getRequests, setGetRequests] = useState(false);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [approvedRequests, setApprovedRequests] = useState([]);
@@ -23,13 +19,13 @@ const RequestsTabular: React.FC<Props> = ({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = React.useState([]);
+  const user = useSelector((state: RootState) => state.UserData.user);
   const { toast } = useToast();
 
-  // getting Requests
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch(`/api/request?pn=${category}`);
+        const response = await fetch(`/api/request?pn=${user.category}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -62,7 +58,7 @@ const RequestsTabular: React.FC<Props> = ({
     if (status === "Approved") {
       // Checking Stock
       try {
-        const response = await fetch(`/api/inventory?pn=${category}`);
+        const response = await fetch(`/api/inventory?pn=${user.category}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -100,7 +96,7 @@ const RequestsTabular: React.FC<Props> = ({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            category: category,
+            category: user.category,
             task: 0,
             _id: req.inventoryId,
             project: false,
@@ -152,7 +148,7 @@ const RequestsTabular: React.FC<Props> = ({
           _id: req._id,
           task: 0,
           status: status,
-          category: category,
+          category: user.category,
         }),
       });
 
@@ -174,7 +170,7 @@ const RequestsTabular: React.FC<Props> = ({
   React.useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`/api/projects?pn=${category}`);
+        const response = await fetch(`/api/projects?pn=${user.category}`);
         const data = await response.json();
         const projectTitles = data.projects.map(
           (project: Project) => project.title
@@ -188,10 +184,15 @@ const RequestsTabular: React.FC<Props> = ({
     fetchProjects();
   }, []);
 
-  // Re-getting requests
+  
   const gettingRequests = () => {
     setGetRequests(!getRequests);
   };
+
+  if (user.role === 0)
+  {
+    <p>You are not authorized to access this page!!</p>
+  }
 
   if (loading) {
     return (
@@ -374,7 +375,7 @@ const RequestsTabular: React.FC<Props> = ({
                             <MarkAsReturnButton
                               req={req}
                               projects={projects}
-                              category={category}
+                              category={user.category}
                               getReqsFunc={gettingRequests}
                             />
                           </div>
@@ -438,7 +439,7 @@ const RequestsTabular: React.FC<Props> = ({
                             <MarkAsReturnButton
                               req={req}
                               projects={projects}
-                              category={category}
+                              category={user.category}
                               getReqsFunc={gettingRequests}
                             />
                           </div>

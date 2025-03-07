@@ -55,7 +55,7 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
           component: component.component,
           image: component.image,
           userId: user.id,    // For notifications
-          name: user.name,
+          name: user.firstName + " " + user.lastName,
           email: user.email,
           phone: phone,
           purpose: purpose,
@@ -149,7 +149,7 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
                 Name:
               </Label>
               <Label htmlFor="name" className="font-extrabold col-span-3">
-                {user.name}
+                {user.firstName + " " + user.lastName}
               </Label>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

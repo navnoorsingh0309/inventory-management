@@ -1,16 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { User, UserInventory } from "@/models/models";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-type props = {
-  user: User;
-};
-
-const MyInventory: React.FC<props> = ({ user }) => {
+const MyInventory = () => {
   const [userInventory, setUserInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const user = useSelector((state: RootState) => state.UserData.user);
   useEffect(() => {
     const fetchInventory = async () => {
       try {

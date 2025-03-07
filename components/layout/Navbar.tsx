@@ -1,62 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import MaxWidthWrapper from "../MaxWidthWrapper";
+import React from "react";
+import MaxWidthWrapper from "../ui/MaxWidthWrapper";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { SignOutButton } from "@clerk/nextjs";
-import Hamburger_Menu from "../ui/HamburgerMenu";
+import Hamburger_Menu from "./HamburgerMenu";
 import { IconUserFilled } from "@tabler/icons-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Admin, SuperAdmin } from "@/models/models";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
-interface Props {
-  email: string;
-  firstName: string;
-  superAdmin: string;
-}
-
-const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  useEffect(() => {
-    const getAdmins = async () => {
-      try {
-        const res = await fetch(`/api/admin`, {
-          cache: "no-store",
-        });
-        const resJson = await res.json();
-        const adminIdsJson = resJson.admins as Admin[];
-        adminIdsJson.map((admin: Admin) => {
-          if (email == admin.email) {
-            setIsAdmin(true);
-          }
-        });
-      } catch (err) {
-        console.error("Error fetching Admins:", err);
-      }
-
-      try {
-        const res = await fetch(`/api/co_admins`, {
-          cache: "no-store",
-        });
-        const resJson = await res.json();
-        const adminIdsJson = resJson.admins as SuperAdmin[];
-        const adminIds = adminIdsJson.map((admin: SuperAdmin) => admin.email);
-        adminIds.map((admin: string) => {
-          if (email == admin) {
-            setIsSuperAdmin(true);
-          }
-        })
-      } catch (err) {
-        console.error("Error fetching Admins:", err);
-      }
-      if (email === superAdmin) {
-        setIsAdmin(true);
-        setIsSuperAdmin(true);
-      }
-    };
-    getAdmins();
-  }, []);
+const NavBar = () => {
+  const user = useSelector((state: RootState) => state.UserData.user);
   return (
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-400 backdrop-blur-lg translate-all">
       <MaxWidthWrapper>
@@ -74,7 +29,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
           </div>
 
           <div className="items-center space-x-4 sm:flex">
-            {email ? null : (
+            {user.id!=="" ? null : (
               <Button
                 variant={"ghost"}
                 asChild
@@ -86,17 +41,17 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
               </Button>
             )}
 
-            {email ? null : (
+            {user.id!=="" ? null : (
               <span
                 className="h-6 w-px bg-gray-200 hidden sm:flex"
                 aria-hidden="true"
               />
             )}
 
-            {email ? (
+            {user.id!=="" ? (
               <div className="flex h-full items-center gap-1 space-x-4">
                 <div className="hidden md:flex h-full items-center justify-center space-x-1">
-                  {(email === superAdmin) && (
+                  {(user.role === 3) && (
                     <Button
                       variant={"ghost"}
                       asChild
@@ -131,7 +86,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                       Projects
                     </Link>
                   </Button>
-                  {(!isAdmin && (email !== superAdmin)) && (
+                  {(user.role === 0 || user.role === 2) && (
                     <Button
                       variant={"ghost"}
                       asChild
@@ -144,7 +99,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                       </Link>
                     </Button>
                   )}
-                  {(isAdmin || isSuperAdmin) && (
+                  {user.role!==0 && (
                     <Button
                       variant={"ghost"}
                       asChild
@@ -165,7 +120,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                     </PopoverTrigger>
                     <PopoverContent className="w-80 bg-white border border-gray-300 rounded-lg shadow-md p-4">
                       <h1 className="text-lg font-semibold text-gray-800 mb-4 items-center space-x-2">
-                        <span>Welcome, {firstName}!</span>
+                        <span>Welcome, {user.firstName}!</span>
                         <span className="animate-wave">👋</span>
                       </h1>
                       <SignOutButton>
@@ -176,7 +131,7 @@ const NavBar: React.FC<Props> = ({ email, firstName, superAdmin }) => {
                     </PopoverContent>
                   </Popover>
                 </div>
-                <Hamburger_Menu email={email} superAdmin={superAdmin} isAdmin={isAdmin} isSuperAdmin={isSuperAdmin} />
+                <Hamburger_Menu/>
               </div>
             ) : (
               <Button className="hidden sm:flex" asChild>
