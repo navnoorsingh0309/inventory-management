@@ -17,6 +17,8 @@ import { SignInSchema } from "@/lib/auth/validation";
 import { useEffect, useState } from "react";
 import { useSignIn, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setId } from "@/lib/features/userdata/UserDataSlice";
 
 const SignInForm = ({
   setActiveTab,
@@ -27,6 +29,7 @@ const SignInForm = ({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [bError, setBError] = useState("");
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -38,9 +41,10 @@ const SignInForm = ({
   const { isLoaded, signIn, setActive } = useSignIn();
   useEffect(() => {
     if (user) {
+      dispatch(setId("UI1"));
       router.replace("/inventory");
     }
-  }, [user, router]);
+  }, [user, router, dispatch]);
 
   const handleSignIn = async (email: string, password: string) => {
     if (!isLoaded || loading) return;

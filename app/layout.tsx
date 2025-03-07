@@ -10,7 +10,8 @@ import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
 import { currentUser } from "@clerk/nextjs/server";
 import AnimatedBackground from "@/components/AnimatedBackground";
-// import StoreProvider from "./StoreProvider";
+import StoreProvider from "./StoreProvider";
+import LoadStore from "@/components/Redux/loadStore";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,10 +35,11 @@ export default async function RootLayout({
 }>) {
   const user = await currentUser();
   return (
-    // <StoreProvider>
+    <StoreProvider>
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <LoadStore/>
             <Provider>
               <NavBar
                 superAdmin={process.env.SUPER_ADMIN!}
@@ -54,6 +56,6 @@ export default async function RootLayout({
           </body>
         </html>
       </ClerkProvider>
-    // </StoreProvider>
+    </StoreProvider>
   );
 }

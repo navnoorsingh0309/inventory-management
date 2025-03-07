@@ -26,6 +26,8 @@ import AddInventoryButton from "./addInventoryButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 interface Props {
   user: User;
@@ -46,7 +48,8 @@ const InventoryTable: React.FC<Props> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<Component[]>([]);
   const { toast } = useToast();
-
+  const userId = useSelector((state: RootState) => state.UserData.id);
+  alert(userId.toString());
   useEffect(() => {
     const fetchInventory = async () => {
       if (isAdmin) {
