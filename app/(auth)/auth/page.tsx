@@ -1,14 +1,22 @@
-"use client"
+"use client";
+
 import AuthTabSystem from "@/components/Auth/AuthTabSystem";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function AuthPage() {
+function AuthContent() {
   const searchParams = useSearchParams();
   const view = searchParams.get("v") || "signin";
 
+  return <AuthTabSystem tab={view} />;
+}
+
+export default function AuthPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
-      <AuthTabSystem tab={view} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AuthContent />
+      </Suspense>
     </div>
   );
 }
