@@ -6,7 +6,7 @@ import { Card, CardContent } from "../ui/card";
 
 const FeaturesSecton = () => {
   return (
-    <section className="container px-4 md:px-6 py-12 md:py-24 lg:py-32">
+    <section className="px-4 md:px-6 py-12 md:py-24 lg:py-32">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

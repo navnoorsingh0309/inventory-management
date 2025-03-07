@@ -8,7 +8,7 @@ import Link from "next/link";
 const HeroSection = () => {
   return (
     <section className="relative overflow-hidden">
-      <div className="container px-4 md:px-6 lg:px-28 py-2 md:py-4 lg:py-6 flex justify-center">
+      <div className="px-4 md:px-6 lg:px-28 py-2 md:py-4 lg:py-6 flex justify-center">
         <div className="text-center max-w-[600px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
