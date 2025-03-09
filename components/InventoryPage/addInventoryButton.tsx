@@ -121,7 +121,7 @@ const AddInventoryButton: React.FC<Props> = ({
               </Label>
               {isSuperAdmin ? <SuperAdminInventoryCategoryCombo onChange={setInvCategory}/> : (
                 <Label htmlFor="name" className="text-right text-lg font-black">
-                  {category}dsad
+                  {category}
                 </Label>
               )}
             </div>
