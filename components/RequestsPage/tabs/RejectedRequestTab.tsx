@@ -82,20 +82,20 @@ const RejectedRequestTab:React.FC<props> = ({filteredRejectedRequests, searchQue
 
                     <div className="flex items-center">
                       <Package className="h-4 w-4 text-gray-400 mr-2" />
-                      <span className="text-gray-700">
+                      <h1 className="text-gray-700">
                         {req.component}{" "}
                         <Badge variant="outline" className="ml-1">
                           {req.quantity}
                         </Badge>
-                      </span>
+                      </h1>
                     </div>
 
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                      <span className="text-gray-700">
+                      <h1 className="text-gray-700">
                         Return date:{" "}
                         {format(new Date(req.date), "MMM dd, yyyy")}
-                      </span>
+                      </h1>
                     </div>
 
                     <TooltipProvider>
@@ -103,9 +103,9 @@ const RejectedRequestTab:React.FC<props> = ({filteredRejectedRequests, searchQue
                         <TooltipTrigger asChild>
                           <div className="flex items-start">
                             <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                            <span className="text-gray-700 line-clamp-1 max-w-md">
+                            <h1 className="text-gray-700 line-clamp-1 max-w-md">
                               {req.purpose}
-                            </span>
+                            </h1>
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -140,43 +140,43 @@ const RejectedRequestTab:React.FC<props> = ({filteredRejectedRequests, searchQue
                         <div className="p-4 space-y-3">
                           <div className="flex items-center">
                             <User className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               {req.name}
-                            </span>
+                            </h1>
                           </div>
                           <div className="flex items-center">
                             <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               {req.email}
-                            </span>
+                            </h1>
                           </div>
                           <div className="flex items-center">
                             <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               {req.phone}
-                            </span>
+                            </h1>
                           </div>
                           <div className="flex items-center">
                             <Package className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               {req.component}{" "}
                               <Badge variant="outline" className="ml-1">
                                 {req.quantity}
                               </Badge>
-                            </span>
+                            </h1>
                           </div>
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               Return date:{" "}
                               {format(new Date(req.date), "MMM dd, yyyy")}
-                            </span>
+                            </h1>
                           </div>
                           <div className="flex items-start">
                             <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                            <span className="text-sm text-gray-700">
+                            <h1 className="text-sm text-gray-700">
                               {req.purpose}
-                            </span>
+                            </h1>
                           </div>
                         </div>
                       </PopoverContent>

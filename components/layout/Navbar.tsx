@@ -23,7 +23,7 @@ const NavBar = () => {
                 className="lg:h-10 lg:w-10 h-8 w-8 rounded-full"
               />
             </Link>
-            <Link href="/" className="font-bold text-2xl">
+            <Link href="/" className="font-bold text-lg lg:text-2xl">
               Inventory Management
             </Link>
           </div>

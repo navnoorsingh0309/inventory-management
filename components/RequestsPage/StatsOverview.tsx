@@ -18,7 +18,7 @@ const StatsOverview:React.FC<props> = ({setActiveTab, pendingLength, approvedLen
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-3 gap-4 mb-8"
+        className="grid-cols-3 gap-4 mb-8 hidden lg:grid"
       >
         <motion.div
           variants={itemVariants}

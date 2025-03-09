@@ -94,10 +94,10 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                       <motion.div
                         key={req._id}
                         variants={itemVariants}
-                        className="p-6 bg-red-50/50 hover:bg-red-50 transition-colors duration-150"
+                        className="p-6 bg-red-50/50 hover:bg-red-50 transition-colors duration-150 w-full"
                       >
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-                          <div className="space-y-2">
+                        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 w-full">
+                          <div className="space-y-2 w-full">
                             <div className="flex items-center">
                               <User className="h-4 w-4 text-gray-400 mr-2" />
                               <h3 className="font-medium text-gray-900">
@@ -107,23 +107,23 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
 
                             <div className="flex items-center">
                               <Package className="h-4 w-4 text-gray-400 mr-2" />
-                              <span className="text-gray-700">
+                              <h1 className="text-gray-700">
                                 {req.component}{" "}
                                 <Badge variant="outline" className="ml-1">
                                   {req.quantity}
                                 </Badge>
-                              </span>
+                              </h1>
                             </div>
 
                             <div className="flex items-center">
                               <Calendar className="h-4 w-4 text-red-500 mr-2" />
-                              <span className="text-red-600 font-medium">
+                              <h1 className="text-red-600 font-medium">
                                 Overdue since:{" "}
                                 {format(
                                   new Date(req.date),
                                   "MMM dd, yyyy"
                                 )}
-                              </span>
+                              </h1>
                             </div>
 
                             <TooltipProvider>
@@ -131,9 +131,9 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <TooltipTrigger asChild>
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-gray-700 line-clamp-1 max-w-md">
+                                    <h1 className="text-gray-700 line-clamp-1 max-w-md">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -170,25 +170,25 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <div className="p-4 space-y-3">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.name}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.email}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.phone}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.component}{" "}
                                       <Badge
                                         variant="outline"
@@ -196,23 +196,23 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                       >
                                         {req.quantity}
                                       </Badge>
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 text-red-500 mr-2" />
-                                    <span className="text-sm text-red-600 font-medium">
+                                    <h1 className="text-sm text-red-600 font-medium">
                                       Overdue since:{" "}
                                       {format(
                                         new Date(req.date),
                                         "MMM dd, yyyy"
                                       )}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </div>
                               </PopoverContent>
@@ -261,7 +261,7 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                       <motion.div
                         key={req._id}
                         variants={itemVariants}
-                        className="p-6 hover:bg-gray-50 transition-colors duration-150"
+                        className="p-6 hover:bg-gray-50 transition-colors duration-150 w-full"
                       >
                         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                           <div className="space-y-2">
@@ -274,23 +274,23 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
 
                             <div className="flex items-center">
                               <Package className="h-4 w-4 text-gray-400 mr-2" />
-                              <span className="text-gray-700">
+                              <h1 className="text-gray-700">
                                 {req.component}{" "}
                                 <Badge variant="outline" className="ml-1">
                                   {req.quantity}
                                 </Badge>
-                              </span>
+                              </h1>
                             </div>
 
                             <div className="flex items-center">
                               <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                              <span className="text-gray-700">
+                              <h1 className="text-gray-700">
                                 Return by:{" "}
                                 {format(
                                   new Date(req.date),
                                   "MMM dd, yyyy"
                                 )}
-                              </span>
+                              </h1>
                             </div>
 
                             <TooltipProvider>
@@ -298,9 +298,9 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <TooltipTrigger asChild>
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-gray-700 line-clamp-1 max-w-md">
+                                    <h1 className="text-gray-700 line-clamp-1 max-w-md">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -337,25 +337,25 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <div className="p-4 space-y-3">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.name}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.email}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.phone}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.component}{" "}
                                       <Badge
                                         variant="outline"
@@ -363,23 +363,23 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                       >
                                         {req.quantity}
                                       </Badge>
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       Return by:{" "}
                                       {format(
                                         new Date(req.date),
                                         "MMM dd, yyyy"
                                       )}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </div>
                               </PopoverContent>
@@ -436,18 +436,18 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
 
                             <div className="flex items-center">
                               <Package className="h-4 w-4 text-gray-400 mr-2" />
-                              <span className="text-gray-700">
+                              <h1 className="text-gray-700">
                                 {req.component}{" "}
                                 <Badge variant="outline" className="ml-1">
                                   {req.quantity}
                                 </Badge>
-                              </span>
+                              </h1>
                             </div>
 
                             {req.returnedProject && (
                               <div className="flex items-center">
                                 <FileText className="h-4 w-4 text-gray-400 mr-2" />
-                                <span className="text-gray-700">
+                                <h1 className="text-gray-700">
                                   Used in project:{" "}
                                   <Badge
                                     variant="secondary"
@@ -455,19 +455,19 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                   >
                                     {req.returnedProject}
                                   </Badge>
-                                </span>
+                                </h1>
                               </div>
                             )}
 
                             <div className="flex items-center">
                               <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                              <span className="text-gray-700">
+                              <h1 className="text-gray-700">
                                 Return date:{" "}
                                 {format(
                                   new Date(req.date),
                                   "MMM dd, yyyy"
                                 )}
-                              </span>
+                              </h1>
                             </div>
 
                             <TooltipProvider>
@@ -475,9 +475,9 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <TooltipTrigger asChild>
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-gray-700 line-clamp-1 max-w-md">
+                                    <h1 className="text-gray-700 line-clamp-1 max-w-md">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -514,25 +514,25 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                 <div className="p-4 space-y-3">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.name}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.email}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.phone}
-                                    </span>
+                                    </h1>
                                   </div>
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.component}{" "}
                                       <Badge
                                         variant="outline"
@@ -540,22 +540,22 @@ const ApprovedRequestsTab:React.FC<props> = ({filteredApprovedRequests, category
                                       >
                                         {req.quantity}
                                       </Badge>
-                                    </span>
+                                    </h1>
                                   </div>
                                   {req.returnedProject && (
                                     <div className="flex items-center">
                                       <FileText className="h-4 w-4 text-gray-400 mr-2" />
-                                      <span className="text-sm text-gray-700">
+                                      <h1 className="text-sm text-gray-700">
                                         Used in project:{" "}
                                         {req.returnedProject}
-                                      </span>
+                                      </h1>
                                     </div>
                                   )}
                                   <div className="flex items-start">
                                     <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                    <span className="text-sm text-gray-700">
+                                    <h1 className="text-sm text-gray-700">
                                       {req.purpose}
-                                    </span>
+                                    </h1>
                                   </div>
                                 </div>
                               </PopoverContent>

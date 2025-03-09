@@ -32,7 +32,7 @@ const Hamburger_Menu = () => {
               <a href="/inventory">Inventory</a>
             </li>
             <li>
-              <a href="/inventory">Projects</a>
+              <a href="/projects">Projects</a>
             </li>
             {(user.role === 0 || user.role === 2) && (
               <li>
