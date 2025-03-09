@@ -25,6 +25,7 @@ export type Component = {
     inStock: number;
     inUse: number;
     usedWhere: Usage[];
+    link: string | null;            // | null as this feature for added later on
 }
 
 export type Request = {

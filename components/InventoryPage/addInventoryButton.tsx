@@ -26,6 +26,7 @@ const AddInventoryButton: React.FC<Props> = ({
   isSuperAdmin,
 }) => {
   const [component, setComponent] = useState("");
+  const [link, setLink] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [invCategory, setInvCategory] = useState(category);
   const [image, setImage] = useState("");
@@ -49,6 +50,7 @@ const AddInventoryButton: React.FC<Props> = ({
         image: image,
         category: invCategory,
         inStock: quantity,
+        link: link,
         inUse: 0,
       }),
       headers: {
@@ -138,6 +140,24 @@ const AddInventoryButton: React.FC<Props> = ({
                 step="1"
                 value={quantity}
                 onChange={handleQuantityChange}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="link"
+                className="text-right text-lg font-bold"
+              >
+                Link
+              </Label>
+              <Input
+                id="link"
+                placeholder="https://www.robu.in/...."
+                className="col-span-3"
+                type="link"
+                step="1"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
                 required
               />
             </div>

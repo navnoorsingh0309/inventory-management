@@ -200,9 +200,9 @@ const InventoryTable = () => {
                 <TableCell>{item.inUse}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <div className="flex space-x-2 justify-end">
+                    <InventoryInfoButton component={item} role={user.role} />
                     {user.role !== 0 && (
                       <>
-                        <InventoryInfoButton component={item} />
                         <EditInventoryButton
                           component={item}
                           category={user.category}

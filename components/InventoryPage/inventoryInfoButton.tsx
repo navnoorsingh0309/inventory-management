@@ -12,9 +12,10 @@ import { Component } from "@/models/models";
 
 type props = {
   component: Component;
+  role: number;
 };
 
-const InventoryInfoButton: React.FC<props> = ({ component }) => {
+const InventoryInfoButton: React.FC<props> = ({ component, role }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -44,54 +45,61 @@ const InventoryInfoButton: React.FC<props> = ({ component }) => {
             <h2 className="text-gray-600">
               Available: {component.inStock - component.inUse}
             </h2>
+            {component.link && (
+              <h2 className="text-gray-600">Link: {component.link}</h2>
+            )}
           </div>
         </div>
         {/* Used Where Section */}
         {/* Used Where Section */}
-        {component.usedWhere && component.usedWhere.length > 0 && (
-          <div className="mt-4 w-full overflow-scroll">
-            <h3 className="text-lg font-semibold text-gray-700">Used Where:</h3>
-            <div className="flex space-x-4 w-full mt-2 p-2 rounded-lg">
-              {component.usedWhere.map((use) => (
-                <div
-                  key={use._id}
-                  className="p-4 bg-gray-100 rounded-lg shadow-md"
-                >
-                  {use.project ? (
-                    <>
-                      <p className="font-bold text-gray-800">
-                        {use.projectName}
-                      </p>
-                      <p className="font-medium text-gray-800">{use.name}</p>
-                      <p className="text-sm text-gray-600">
-                        Email: {use.email}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Phone: {use.phone}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Quantity: {use.quantity}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="font-medium text-gray-800">{use.name}</p>
-                      <p className="text-sm text-gray-600">
-                        Email: {use.email}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Phone: {use.phone}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Quantity: {use.quantity}
-                      </p>
-                    </>
-                  )}
-                </div>
-              ))}
+        {role !== 0 &&
+          component.usedWhere &&
+          component.usedWhere.length > 0 && (
+            <div className="mt-4 w-full overflow-scroll">
+              <h3 className="text-lg font-semibold text-gray-700">
+                Used Where:
+              </h3>
+              <div className="flex space-x-4 w-full mt-2 p-2 rounded-lg">
+                {component.usedWhere.map((use) => (
+                  <div
+                    key={use._id}
+                    className="p-4 bg-gray-100 rounded-lg shadow-md"
+                  >
+                    {use.project ? (
+                      <>
+                        <p className="font-bold text-gray-800">
+                          {use.projectName}
+                        </p>
+                        <p className="font-medium text-gray-800">{use.name}</p>
+                        <p className="text-sm text-gray-600">
+                          Email: {use.email}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Phone: {use.phone}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Quantity: {use.quantity}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="font-medium text-gray-800">{use.name}</p>
+                        <p className="text-sm text-gray-600">
+                          Email: {use.email}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Phone: {use.phone}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Quantity: {use.quantity}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </DialogContent>
     </Dialog>
   );
