@@ -29,7 +29,7 @@ const AnimatedBackground = () => {
     setSymbols(generatedSymbols);
   }, []);
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden z-auto">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
