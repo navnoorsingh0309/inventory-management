@@ -419,16 +419,6 @@ const InventoryCard: React.FC<CardProps> = ({ item }) => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   return (
     <motion.div
       variants={itemVariants}
