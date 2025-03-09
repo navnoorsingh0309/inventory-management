@@ -7,23 +7,31 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import { format, isAfter, isBefore } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, CheckCircle, XCircle, Info, AlertTriangle, Calendar, User, Mail, Phone, Package, FileText, Loader2 } from 'lucide-react';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { 
-  Popover, 
-  PopoverContent, 
-  PopoverTrigger 
+import {
+  Clock,
+  CheckCircle,
+  XCircle,
+  Info,
+  AlertTriangle,
+  Calendar,
+  User,
+  Mail,
+  Phone,
+  Package,
+  FileText,
+  Loader2,
+} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { 
-  Tooltip, 
-  TooltipContent, 
-  TooltipProvider, 
-  TooltipTrigger 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,8 +48,10 @@ const RequestsTabular = () => {
   const [projects, setProjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("pending");
-  const [processingRequestId, setProcessingRequestId] = useState<string | null>(null);
-  
+  const [processingRequestId, setProcessingRequestId] = useState<string | null>(
+    null
+  );
+
   const user = useSelector((state: RootState) => state.UserData.user);
   const { toast } = useToast();
 
@@ -78,7 +88,7 @@ const RequestsTabular = () => {
   // Function to update request status
   const updateRequestStatus = async (req: Request, status: string) => {
     setProcessingRequestId(req._id);
-    
+
     let alreadyBeingUsed = 0;
     if (status === "Approved") {
       // Checking Stock
@@ -101,8 +111,10 @@ const RequestsTabular = () => {
           // Insufficient stock
           toast({
             title: "Insufficient Stock",
-            description: `Available: ${component.inStock - component.inUse}, Required: ${req.quantity}`,
-            variant: "destructive"
+            description: `Available: ${
+              component.inStock - component.inUse
+            }, Required: ${req.quantity}`,
+            variant: "destructive",
           });
           setProcessingRequestId(null);
           return;
@@ -144,7 +156,7 @@ const RequestsTabular = () => {
         toast({
           title: "Error",
           description: "Failed to update inventory status",
-          variant: "destructive"
+          variant: "destructive",
         });
         setProcessingRequestId(null);
         return;
@@ -169,7 +181,7 @@ const RequestsTabular = () => {
       toast({
         title: "Error",
         description: "Failed to update user data",
-        variant: "destructive"
+        variant: "destructive",
       });
       setProcessingRequestId(null);
       return;
@@ -194,19 +206,21 @@ const RequestsTabular = () => {
       if (!response.ok) {
         throw new Error(result.error || "Failed to update status.");
       }
-      
+
       toast({
         title: status === "Approved" ? "Request Approved" : "Request Rejected",
-        description: `The request from ${req.name} has been ${status.toLowerCase()}.`,
+        description: `The request from ${
+          req.name
+        } has been ${status.toLowerCase()}.`,
       });
-      
+
       gettingRequests();
     } catch (err) {
       console.error("Error updating status:", err);
       toast({
         title: "Error",
         description: "Failed to update request status",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setProcessingRequestId(null);
@@ -228,7 +242,7 @@ const RequestsTabular = () => {
         toast({
           title: "Error",
           description: "Failed to fetch projects",
-          variant: "destructive"
+          variant: "destructive",
         });
       }
     };
@@ -242,12 +256,13 @@ const RequestsTabular = () => {
   // Filter requests based on search query
   const filterRequests = (requests: Request[]) => {
     if (!searchQuery) return requests;
-    
-    return requests.filter((req: Request) => 
-      req.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      req.component.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      req.purpose.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      req.email.toLowerCase().includes(searchQuery.toLowerCase())
+
+    return requests.filter(
+      (req: Request) =>
+        req.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        req.component.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        req.purpose.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        req.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
 
@@ -257,45 +272,41 @@ const RequestsTabular = () => {
 
   if (user.role === 0) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="flex flex-col items-center justify-center h-[50vh] text-center p-6"
       >
         <AlertTriangle className="h-16 w-16 text-amber-500 mb-4" />
         <h3 className="text-xl font-bold text-gray-800 mb-2">Access Denied</h3>
-        <p className="text-gray-600">You are not authorized to access this page.</p>
+        <p className="text-gray-600">
+          You are not authorized to access this page.
+        </p>
       </motion.div>
     );
   }
 
   if (loading) {
     return (
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="w-full flex flex-col justify-center items-center h-[60vh]"
-      >
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
-          <Loader2 className="w-16 h-16 absolute top-0 left-0 text-blue-500 animate-spin" />
-        </div>
-        <p className="mt-4 text-gray-600 font-medium">Loading requests...</p>
-      </motion.div>
+      <div className="w-full flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="w-full flex flex-col items-center justify-center h-[50vh] text-center p-6"
       >
         <XCircle className="h-16 w-16 text-red-500 mb-4" />
-        <h3 className="text-xl font-bold text-gray-800 mb-2">Something went wrong</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-2">
+          Something went wrong
+        </h3>
         <p className="text-gray-600 mb-6">{error}</p>
-        <Button 
+        <Button
           onClick={() => window.location.reload()}
           className="bg-blue-600 hover:bg-blue-700 text-white"
         >
@@ -307,30 +318,30 @@ const RequestsTabular = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { 
-        staggerChildren: 0.1
-      }
-    }
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100 }
-    }
+      transition: { type: "spring", stiffness: 100 },
+    },
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="container mx-auto px-4 py-8"
     >
-      <motion.div 
+      <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         className="mb-8"
@@ -344,13 +355,13 @@ const RequestsTabular = () => {
       </motion.div>
 
       {/* Stats Overview */}
-      <motion.div 
+      <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="grid grid-cols-3 gap-4 mb-8"
       >
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="bg-white rounded-xl shadow-md p-4 border-l-4 border-amber-500"
           onClick={() => setActiveTab("pending")}
@@ -366,7 +377,7 @@ const RequestsTabular = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500"
           onClick={() => setActiveTab("approved")}
@@ -382,7 +393,7 @@ const RequestsTabular = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="bg-white rounded-xl shadow-md p-4 border-l-4 border-red-500"
           onClick={() => setActiveTab("rejected")}
@@ -400,7 +411,7 @@ const RequestsTabular = () => {
       </motion.div>
 
       {/* Search Bar */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
@@ -418,22 +429,22 @@ const RequestsTabular = () => {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-3 mb-8 bg-gray-100/40 backdrop-blur-lg rounded-xl p-1.5">
-          <TabsTrigger 
-            value="pending" 
+          <TabsTrigger
+            value="pending"
             className="data-[state=active]:bg-white data-[state=active]:text-amber-600 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
             <Clock className="h-4 w-4 mr-2" />
             Pending
           </TabsTrigger>
-          <TabsTrigger 
-            value="approved" 
+          <TabsTrigger
+            value="approved"
             className="data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
             <CheckCircle className="h-4 w-4 mr-2" />
             Approved
           </TabsTrigger>
-          <TabsTrigger 
-            value="rejected" 
+          <TabsTrigger
+            value="rejected"
             className="data-[state=active]:bg-white data-[state=active]:text-red-600 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
             <XCircle className="h-4 w-4 mr-2" />
@@ -465,7 +476,7 @@ const RequestsTabular = () => {
 
             <AnimatePresence>
               {filteredPendingRequests.length > 0 ? (
-                <motion.div 
+                <motion.div
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
@@ -481,23 +492,29 @@ const RequestsTabular = () => {
                         <div className="space-y-2">
                           <div className="flex items-center">
                             <User className="h-4 w-4 text-gray-400 mr-2" />
-                            <h3 className="font-medium text-gray-900">{req.name}</h3>
+                            <h3 className="font-medium text-gray-900">
+                              {req.name}
+                            </h3>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <Package className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-gray-700">
-                              {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                              {req.component}{" "}
+                              <Badge variant="outline" className="ml-1">
+                                {req.quantity}
+                              </Badge>
                             </span>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-gray-700">
-                              Return by: {format(new Date(req.date), "MMM dd, yyyy")}
+                              Return by:{" "}
+                              {format(new Date(req.date), "MMM dd, yyyy")}
                             </span>
                           </div>
-                          
+
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -514,55 +531,79 @@ const RequestsTabular = () => {
                             </Tooltip>
                           </TooltipProvider>
                         </div>
-                        
+
                         <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" size="sm" className="flex items-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center"
+                              >
                                 <Info className="h-4 w-4 mr-2" />
                                 Details
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent side="left" align="center" className="w-80 p-0">
+                            <PopoverContent
+                              side="left"
+                              align="center"
+                              className="w-80 p-0"
+                            >
                               <div className="p-4 border-b border-gray-100 bg-gray-50">
-                                <h4 className="font-semibold text-gray-900">Request Details</h4>
+                                <h4 className="font-semibold text-gray-900">
+                                  Request Details
+                                </h4>
                               </div>
                               <div className="p-4 space-y-3">
                                 <div className="flex items-center">
                                   <User className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.name}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.name}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.email}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.email}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.phone}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.phone}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Package className="h-4 w-4 text-gray-400 mr-2" />
                                   <span className="text-sm text-gray-700">
-                                    {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                    {req.component}{" "}
+                                    <Badge variant="outline" className="ml-1">
+                                      {req.quantity}
+                                    </Badge>
                                   </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                                   <span className="text-sm text-gray-700">
-                                    Return by: {format(new Date(req.date), "MMM dd, yyyy")}
+                                    Return by:{" "}
+                                    {format(new Date(req.date), "MMM dd, yyyy")}
                                   </span>
                                 </div>
                                 <div className="flex items-start">
                                   <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                  <span className="text-sm text-gray-700">{req.purpose}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.purpose}
+                                  </span>
                                 </div>
                               </div>
                             </PopoverContent>
                           </Popover>
-                          
+
                           <div className="flex gap-2">
                             <Button
-                              onClick={() => updateRequestStatus(req, "Approved")}
+                              onClick={() =>
+                                updateRequestStatus(req, "Approved")
+                              }
                               className="bg-green-500 hover:bg-green-600 text-white"
                               disabled={processingRequestId === req._id}
                             >
@@ -579,7 +620,9 @@ const RequestsTabular = () => {
                               )}
                             </Button>
                             <Button
-                              onClick={() => updateRequestStatus(req, "Rejected")}
+                              onClick={() =>
+                                updateRequestStatus(req, "Rejected")
+                              }
                               className="bg-red-500 hover:bg-red-600 text-white"
                               disabled={processingRequestId === req._id}
                             >
@@ -602,16 +645,18 @@ const RequestsTabular = () => {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center py-16 text-center"
                 >
                   <Clock className="h-12 w-12 text-gray-300 mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700">No pending requests</h3>
+                  <h3 className="text-xl font-semibold text-gray-700">
+                    No pending requests
+                  </h3>
                   <p className="text-gray-500 mt-2 max-w-md">
-                    {searchQuery 
-                      ? "No pending requests match your search criteria." 
+                    {searchQuery
+                      ? "No pending requests match your search criteria."
                       : "There are no pending inventory requests at the moment."}
                   </p>
                 </motion.div>
@@ -647,7 +692,8 @@ const RequestsTabular = () => {
                 <div>
                   {/* Overdue Requests */}
                   {filteredApprovedRequests.some(
-                    (req: Request) => isBefore(new Date(req.date), new Date()) && !req.returned
+                    (req: Request) =>
+                      isBefore(new Date(req.date), new Date()) && !req.returned
                   ) && (
                     <div className="mt-4">
                       <div className="px-6 py-3 bg-red-50">
@@ -656,8 +702,8 @@ const RequestsTabular = () => {
                           Overdue Requests
                         </h3>
                       </div>
-                      
-                      <motion.div 
+
+                      <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
@@ -665,7 +711,9 @@ const RequestsTabular = () => {
                       >
                         {filteredApprovedRequests
                           .filter(
-                            (req: Request) => isBefore(new Date(req.date), new Date()) && !req.returned
+                            (req: Request) =>
+                              isBefore(new Date(req.date), new Date()) &&
+                              !req.returned
                           )
                           .map((req: Request) => (
                             <motion.div
@@ -677,23 +725,32 @@ const RequestsTabular = () => {
                                 <div className="space-y-2">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <h3 className="font-medium text-gray-900">{req.name}</h3>
+                                    <h3 className="font-medium text-gray-900">
+                                      {req.name}
+                                    </h3>
                                   </div>
-                                  
+
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
                                     <span className="text-gray-700">
-                                      {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                      {req.component}{" "}
+                                      <Badge variant="outline" className="ml-1">
+                                        {req.quantity}
+                                      </Badge>
                                     </span>
                                   </div>
-                                  
+
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 text-red-500 mr-2" />
                                     <span className="text-red-600 font-medium">
-                                      Overdue since: {format(new Date(req.date), "MMM dd, yyyy")}
+                                      Overdue since:{" "}
+                                      {format(
+                                        new Date(req.date),
+                                        "MMM dd, yyyy"
+                                      )}
                                     </span>
                                   </div>
-                                  
+
                                   <TooltipProvider>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -705,57 +762,87 @@ const RequestsTabular = () => {
                                         </div>
                                       </TooltipTrigger>
                                       <TooltipContent>
-                                        <p className="max-w-xs">{req.purpose}</p>
+                                        <p className="max-w-xs">
+                                          {req.purpose}
+                                        </p>
                                       </TooltipContent>
                                     </Tooltip>
                                   </TooltipProvider>
                                 </div>
-                                
+
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
                                   <Popover>
                                     <PopoverTrigger asChild>
-                                      <Button variant="outline" size="sm" className="flex items-center">
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="flex items-center"
+                                      >
                                         <Info className="h-4 w-4 mr-2" />
                                         Details
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent side="left" align="center" className="w-80 p-0">
+                                    <PopoverContent
+                                      side="left"
+                                      align="center"
+                                      className="w-80 p-0"
+                                    >
                                       <div className="p-4 border-b border-gray-100 bg-gray-50">
-                                        <h4 className="font-semibold text-gray-900">Request Details</h4>
+                                        <h4 className="font-semibold text-gray-900">
+                                          Request Details
+                                        </h4>
                                       </div>
                                       <div className="p-4 space-y-3">
                                         <div className="flex items-center">
                                           <User className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.name}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.name}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.email}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.email}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.phone}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.phone}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Package className="h-4 w-4 text-gray-400 mr-2" />
                                           <span className="text-sm text-gray-700">
-                                            {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                            {req.component}{" "}
+                                            <Badge
+                                              variant="outline"
+                                              className="ml-1"
+                                            >
+                                              {req.quantity}
+                                            </Badge>
                                           </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Calendar className="h-4 w-4 text-red-500 mr-2" />
                                           <span className="text-sm text-red-600 font-medium">
-                                            Overdue since: {format(new Date(req.date), "MMM dd, yyyy")}
+                                            Overdue since:{" "}
+                                            {format(
+                                              new Date(req.date),
+                                              "MMM dd, yyyy"
+                                            )}
                                           </span>
                                         </div>
                                         <div className="flex items-start">
                                           <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                          <span className="text-sm text-gray-700">{req.purpose}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.purpose}
+                                          </span>
                                         </div>
                                       </div>
                                     </PopoverContent>
                                   </Popover>
-                                  
+
                                   <MarkAsReturnButton
                                     req={req}
                                     projects={projects}
@@ -772,7 +859,8 @@ const RequestsTabular = () => {
 
                   {/* Non-Overdue Requests */}
                   {filteredApprovedRequests.some(
-                    (req: Request) => isAfter(new Date(req.date), new Date()) && !req.returned
+                    (req: Request) =>
+                      isAfter(new Date(req.date), new Date()) && !req.returned
                   ) && (
                     <div className="mt-4">
                       <div className="px-6 py-3 bg-green-50">
@@ -781,8 +869,8 @@ const RequestsTabular = () => {
                           Active Requests
                         </h3>
                       </div>
-                      
-                      <motion.div 
+
+                      <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
@@ -790,7 +878,9 @@ const RequestsTabular = () => {
                       >
                         {filteredApprovedRequests
                           .filter(
-                            (req: Request) => isAfter(new Date(req.date), new Date()) && !req.returned
+                            (req: Request) =>
+                              isAfter(new Date(req.date), new Date()) &&
+                              !req.returned
                           )
                           .map((req: Request) => (
                             <motion.div
@@ -802,23 +892,32 @@ const RequestsTabular = () => {
                                 <div className="space-y-2">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <h3 className="font-medium text-gray-900">{req.name}</h3>
+                                    <h3 className="font-medium text-gray-900">
+                                      {req.name}
+                                    </h3>
                                   </div>
-                                  
+
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
                                     <span className="text-gray-700">
-                                      {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                      {req.component}{" "}
+                                      <Badge variant="outline" className="ml-1">
+                                        {req.quantity}
+                                      </Badge>
                                     </span>
                                   </div>
-                                  
+
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                                     <span className="text-gray-700">
-                                      Return by: {format(new Date(req.date), "MMM dd, yyyy")}
+                                      Return by:{" "}
+                                      {format(
+                                        new Date(req.date),
+                                        "MMM dd, yyyy"
+                                      )}
                                     </span>
                                   </div>
-                                  
+
                                   <TooltipProvider>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -830,57 +929,87 @@ const RequestsTabular = () => {
                                         </div>
                                       </TooltipTrigger>
                                       <TooltipContent>
-                                        <p className="max-w-xs">{req.purpose}</p>
+                                        <p className="max-w-xs">
+                                          {req.purpose}
+                                        </p>
                                       </TooltipContent>
                                     </Tooltip>
                                   </TooltipProvider>
                                 </div>
-                                
+
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
                                   <Popover>
                                     <PopoverTrigger asChild>
-                                      <Button variant="outline" size="sm" className="flex items-center">
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="flex items-center"
+                                      >
                                         <Info className="h-4 w-4 mr-2" />
                                         Details
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent side="left" align="center" className="w-80 p-0">
+                                    <PopoverContent
+                                      side="left"
+                                      align="center"
+                                      className="w-80 p-0"
+                                    >
                                       <div className="p-4 border-b border-gray-100 bg-gray-50">
-                                        <h4 className="font-semibold text-gray-900">Request Details</h4>
+                                        <h4 className="font-semibold text-gray-900">
+                                          Request Details
+                                        </h4>
                                       </div>
                                       <div className="p-4 space-y-3">
                                         <div className="flex items-center">
                                           <User className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.name}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.name}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.email}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.email}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.phone}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.phone}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Package className="h-4 w-4 text-gray-400 mr-2" />
                                           <span className="text-sm text-gray-700">
-                                            {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                            {req.component}{" "}
+                                            <Badge
+                                              variant="outline"
+                                              className="ml-1"
+                                            >
+                                              {req.quantity}
+                                            </Badge>
                                           </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                                           <span className="text-sm text-gray-700">
-                                            Return by: {format(new Date(req.date), "MMM dd, yyyy")}
+                                            Return by:{" "}
+                                            {format(
+                                              new Date(req.date),
+                                              "MMM dd, yyyy"
+                                            )}
                                           </span>
                                         </div>
                                         <div className="flex items-start">
                                           <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                          <span className="text-sm text-gray-700">{req.purpose}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.purpose}
+                                          </span>
                                         </div>
                                       </div>
                                     </PopoverContent>
                                   </Popover>
-                                  
+
                                   <MarkAsReturnButton
                                     req={req}
                                     projects={projects}
@@ -896,7 +1025,9 @@ const RequestsTabular = () => {
                   )}
 
                   {/* Returned Requests */}
-                  {filteredApprovedRequests.some((req: Request) => req.returned) && (
+                  {filteredApprovedRequests.some(
+                    (req: Request) => req.returned
+                  ) && (
                     <div className="mt-4">
                       <div className="px-6 py-3 bg-gray-50">
                         <h3 className="text-lg font-semibold text-gray-700 flex items-center">
@@ -904,8 +1035,8 @@ const RequestsTabular = () => {
                           Returned Components
                         </h3>
                       </div>
-                      
-                      <motion.div 
+
+                      <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
@@ -923,32 +1054,47 @@ const RequestsTabular = () => {
                                 <div className="space-y-2">
                                   <div className="flex items-center">
                                     <User className="h-4 w-4 text-gray-400 mr-2" />
-                                    <h3 className="font-medium text-gray-900">{req.name}</h3>
+                                    <h3 className="font-medium text-gray-900">
+                                      {req.name}
+                                    </h3>
                                   </div>
-                                  
+
                                   <div className="flex items-center">
                                     <Package className="h-4 w-4 text-gray-400 mr-2" />
                                     <span className="text-gray-700">
-                                      {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                      {req.component}{" "}
+                                      <Badge variant="outline" className="ml-1">
+                                        {req.quantity}
+                                      </Badge>
                                     </span>
                                   </div>
-                                  
+
                                   {req.returnedProject && (
                                     <div className="flex items-center">
                                       <FileText className="h-4 w-4 text-gray-400 mr-2" />
                                       <span className="text-gray-700">
-                                        Used in project: <Badge variant="secondary" className="ml-1">{req.returnedProject}</Badge>
+                                        Used in project:{" "}
+                                        <Badge
+                                          variant="secondary"
+                                          className="ml-1"
+                                        >
+                                          {req.returnedProject}
+                                        </Badge>
                                       </span>
                                     </div>
                                   )}
-                                  
+
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                                     <span className="text-gray-700">
-                                      Return date: {format(new Date(req.date), "MMM dd, yyyy")}
+                                      Return date:{" "}
+                                      {format(
+                                        new Date(req.date),
+                                        "MMM dd, yyyy"
+                                      )}
                                     </span>
                                   </div>
-                                  
+
                                   <TooltipProvider>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -960,54 +1106,81 @@ const RequestsTabular = () => {
                                         </div>
                                       </TooltipTrigger>
                                       <TooltipContent>
-                                        <p className="max-w-xs">{req.purpose}</p>
+                                        <p className="max-w-xs">
+                                          {req.purpose}
+                                        </p>
                                       </TooltipContent>
                                     </Tooltip>
                                   </TooltipProvider>
                                 </div>
-                                
+
                                 <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
                                   <Popover>
                                     <PopoverTrigger asChild>
-                                      <Button variant="outline" size="sm" className="flex items-center">
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="flex items-center"
+                                      >
                                         <Info className="h-4 w-4 mr-2" />
                                         Details
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent side="left" align="center" className="w-80 p-0">
+                                    <PopoverContent
+                                      side="left"
+                                      align="center"
+                                      className="w-80 p-0"
+                                    >
                                       <div className="p-4 border-b border-gray-100 bg-gray-50">
-                                        <h4 className="font-semibold text-gray-900">Request Details</h4>
+                                        <h4 className="font-semibold text-gray-900">
+                                          Request Details
+                                        </h4>
                                       </div>
                                       <div className="p-4 space-y-3">
                                         <div className="flex items-center">
                                           <User className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.name}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.name}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.email}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.email}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                          <span className="text-sm text-gray-700">{req.phone}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.phone}
+                                          </span>
                                         </div>
                                         <div className="flex items-center">
                                           <Package className="h-4 w-4 text-gray-400 mr-2" />
                                           <span className="text-sm text-gray-700">
-                                            {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                            {req.component}{" "}
+                                            <Badge
+                                              variant="outline"
+                                              className="ml-1"
+                                            >
+                                              {req.quantity}
+                                            </Badge>
                                           </span>
                                         </div>
                                         {req.returnedProject && (
                                           <div className="flex items-center">
                                             <FileText className="h-4 w-4 text-gray-400 mr-2" />
                                             <span className="text-sm text-gray-700">
-                                              Used in project: {req.returnedProject}
+                                              Used in project:{" "}
+                                              {req.returnedProject}
                                             </span>
                                           </div>
                                         )}
                                         <div className="flex items-start">
                                           <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                          <span className="text-sm text-gray-700">{req.purpose}</span>
+                                          <span className="text-sm text-gray-700">
+                                            {req.purpose}
+                                          </span>
                                         </div>
                                       </div>
                                     </PopoverContent>
@@ -1021,16 +1194,18 @@ const RequestsTabular = () => {
                   )}
                 </div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center py-16 text-center"
                 >
                   <CheckCircle className="h-12 w-12 text-gray-300 mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700">No approved requests</h3>
+                  <h3 className="text-xl font-semibold text-gray-700">
+                    No approved requests
+                  </h3>
                   <p className="text-gray-500 mt-2 max-w-md">
-                    {searchQuery 
-                      ? "No approved requests match your search criteria." 
+                    {searchQuery
+                      ? "No approved requests match your search criteria."
                       : "There are no approved inventory requests at the moment."}
                   </p>
                 </motion.div>
@@ -1063,7 +1238,7 @@ const RequestsTabular = () => {
 
             <AnimatePresence>
               {filteredRejectedRequests.length > 0 ? (
-                <motion.div 
+                <motion.div
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
@@ -1079,23 +1254,29 @@ const RequestsTabular = () => {
                         <div className="space-y-2">
                           <div className="flex items-center">
                             <User className="h-4 w-4 text-gray-400 mr-2" />
-                            <h3 className="font-medium text-gray-900">{req.name}</h3>
+                            <h3 className="font-medium text-gray-900">
+                              {req.name}
+                            </h3>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <Package className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-gray-700">
-                              {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                              {req.component}{" "}
+                              <Badge variant="outline" className="ml-1">
+                                {req.quantity}
+                              </Badge>
                             </span>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                             <span className="text-gray-700">
-                              Return date: {format(new Date(req.date), "MMM dd, yyyy")}
+                              Return date:{" "}
+                              {format(new Date(req.date), "MMM dd, yyyy")}
                             </span>
                           </div>
-                          
+
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -1112,47 +1293,69 @@ const RequestsTabular = () => {
                             </Tooltip>
                           </TooltipProvider>
                         </div>
-                        
+
                         <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" size="sm" className="flex items-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex items-center"
+                              >
                                 <Info className="h-4 w-4 mr-2" />
                                 Details
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent side="left" align="center" className="w-80 p-0">
+                            <PopoverContent
+                              side="left"
+                              align="center"
+                              className="w-80 p-0"
+                            >
                               <div className="p-4 border-b border-gray-100 bg-gray-50">
-                                <h4 className="font-semibold text-gray-900">Request Details</h4>
+                                <h4 className="font-semibold text-gray-900">
+                                  Request Details
+                                </h4>
                               </div>
                               <div className="p-4 space-y-3">
                                 <div className="flex items-center">
                                   <User className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.name}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.name}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Mail className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.email}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.email}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Phone className="h-4 w-4 text-gray-400 mr-2" />
-                                  <span className="text-sm text-gray-700">{req.phone}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.phone}
+                                  </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Package className="h-4 w-4 text-gray-400 mr-2" />
                                   <span className="text-sm text-gray-700">
-                                    {req.component} <Badge variant="outline" className="ml-1">{req.quantity}</Badge>
+                                    {req.component}{" "}
+                                    <Badge variant="outline" className="ml-1">
+                                      {req.quantity}
+                                    </Badge>
                                   </span>
                                 </div>
                                 <div className="flex items-center">
                                   <Calendar className="h-4 w-4 text-gray-400 mr-2" />
                                   <span className="text-sm text-gray-700">
-                                    Return date: {format(new Date(req.date), "MMM dd, yyyy")}
+                                    Return date:{" "}
+                                    {format(new Date(req.date), "MMM dd, yyyy")}
                                   </span>
                                 </div>
                                 <div className="flex items-start">
                                   <FileText className="h-4 w-4 text-gray-400 mr-2 mt-0.5" />
-                                  <span className="text-sm text-gray-700">{req.purpose}</span>
+                                  <span className="text-sm text-gray-700">
+                                    {req.purpose}
+                                  </span>
                                 </div>
                               </div>
                             </PopoverContent>
@@ -1163,16 +1366,18 @@ const RequestsTabular = () => {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center py-16 text-center"
                 >
                   <XCircle className="h-12 w-12 text-gray-300 mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-700">No rejected requests</h3>
+                  <h3 className="text-xl font-semibold text-gray-700">
+                    No rejected requests
+                  </h3>
                   <p className="text-gray-500 mt-2 max-w-md">
-                    {searchQuery 
-                      ? "No rejected requests match your search criteria." 
+                    {searchQuery
+                      ? "No rejected requests match your search criteria."
                       : "There are no rejected inventory requests at the moment."}
                   </p>
                 </motion.div>

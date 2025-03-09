@@ -1,69 +1,76 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import type { Admin, Project } from "@/models/models"
-import AddProjectButton from "./addProjectButton"
-import { CheckCircle, Trash2, Calendar, Mail, Clock } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useToast } from "@/hooks/use-toast"
-import { useSelector } from "react-redux"
-import type { RootState } from "@/lib/store"
-import { motion, AnimatePresence } from "framer-motion"
-import { Badge } from "@/components/ui/badge"
+import { useEffect, useState } from "react";
+import type { Admin, Project } from "@/models/models";
+import AddProjectButton from "./addProjectButton";
+import { CheckCircle, Trash2, Calendar, Mail, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/store";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 const ProjectsSection = () => {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-  const [categories, setCategories] = useState<string[]>([])
-  const [activeCategory, setActiveCategory] = useState<string>("All")
-  const { toast } = useToast()
-  const user = useSelector((state: RootState) => state.UserData.user)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const { toast } = useToast();
+  const user = useSelector((state: RootState) => state.UserData.user);
 
   // Fetch projects from API
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         // Fetch categories
-        const res = await fetch("/api/admin")
-        const data = await res.json()
-        const AdminsData = data.admins
-        const newCategories = ["BoST", ...AdminsData.map((admin: Admin) => admin.category)]
+        const res = await fetch("/api/admin");
+        const data = await res.json();
+        const AdminsData = data.admins;
+        const newCategories = [
+          "BoST",
+          ...AdminsData.map((admin: Admin) => admin.category),
+        ];
 
-        setCategories(["All", ...newCategories])
+        setCategories(["All", ...newCategories]);
 
         // Fetch inventory **after** categories are set
         const projectsData = await Promise.all(
           newCategories.map(async (category) => {
-            const response = await fetch(`/api/projects?pn=${category}`)
+            const response = await fetch(`/api/projects?pn=${category}`);
             if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`)
+              throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const data = await response.json()
-            return data.projects
-          }),
-        )
+            const data = await response.json();
+            return data.projects;
+          })
+        );
 
-        setProjects(projectsData.flat())
+        setProjects(projectsData.flat());
       } catch (err) {
-        console.error("Error fetching data:", err)
+        console.error("Error fetching data:", err);
         toast({
           title: "Failed to load projects",
           description: "Please try refreshing the page",
           variant: "destructive",
-        })
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjects()
-  }, [toast])
+    fetchProjects();
+  }, [toast]);
 
   // Deleting Project
   const deleteProject = async (project: Project) => {
     try {
-      setLoading(true)
+      setLoading(true);
       await fetch("/api/projects", {
         method: "DELETE",
         body: JSON.stringify({
@@ -73,31 +80,31 @@ const ProjectsSection = () => {
         headers: {
           "Content-type": "application/json",
         },
-      })
+      });
 
       // Update local state
-      setProjects(projects.filter((p) => p._id !== project._id))
+      setProjects(projects.filter((p) => p._id !== project._id));
 
       toast({
         title: "Project Deleted!",
         description: `${project.title} has been removed.`,
-      })
+      });
     } catch (error) {
-      console.error("Error deleting project:", error)
+      console.error("Error deleting project:", error);
       toast({
         title: "Failed to delete project",
         description: "Please try again",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // Marking Project Complete
   const completedProject = async (project: Project) => {
     try {
-      setLoading(true)
+      setLoading(true);
       await fetch("/api/projects", {
         method: "PUT",
         body: JSON.stringify({
@@ -107,32 +114,38 @@ const ProjectsSection = () => {
         headers: {
           "Content-type": "application/json",
         },
-      })
+      });
 
       // Update local state
       setProjects(
-        projects.map((p) => (p._id === project._id ? { ...p, completed: true, endDate: new Date().toISOString() } : p)),
-      )
+        projects.map((p) =>
+          p._id === project._id
+            ? { ...p, completed: true, endDate: new Date().toISOString() }
+            : p
+        )
+      );
 
       toast({
         title: "Project Completed!",
         description: `${project.title} has been marked as completed.`,
-      })
+      });
     } catch (error) {
-      console.error("Error completing project:", error)
+      console.error("Error completing project:", error);
       toast({
         title: "Failed to update project",
         description: "Please try again",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // Filter projects by category
   const filteredProjects =
-    activeCategory === "All" ? projects : projects.filter((project) => project.category === activeCategory)
+    activeCategory === "All"
+      ? projects
+      : projects.filter((project) => project.category === activeCategory);
 
   return (
     <div className="mx-auto px-4 py-12">
@@ -146,10 +159,17 @@ const ProjectsSection = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Projects Dashboard
           </h1>
-          <p className="text-gray-600 mt-2">Explore and manage all ongoing and completed projects</p>
+          <p className="text-gray-600 mt-2">
+            Explore and manage all ongoing and completed projects
+          </p>
         </div>
 
-        {user.role !== 0 && <AddProjectButton category={user.category} isSuperAdmin={user.role === 3} />}
+        {user.role !== 0 && (
+          <AddProjectButton
+            category={user.category}
+            isSuperAdmin={user.role === 3}
+          />
+        )}
       </motion.div>
 
       {/* Category Filter */}
@@ -177,10 +197,7 @@ const ProjectsSection = () => {
 
       {loading ? (
         <div className="w-full flex justify-center items-center h-64">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200"></div>
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 absolute top-0 left-0"></div>
-          </div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
         </div>
       ) : (
         <AnimatePresence>
@@ -191,7 +208,9 @@ const ProjectsSection = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <h3 className="text-2xl font-semibold text-gray-700">No projects found</h3>
+              <h3 className="text-2xl font-semibold text-gray-700">
+                No projects found
+              </h3>
               <p className="text-gray-500 mt-2">
                 {activeCategory === "All"
                   ? "There are no projects available yet."
@@ -231,7 +250,9 @@ const ProjectsSection = () => {
 
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-2xl font-bold text-gray-900 line-clamp-1">{project.title}</h2>
+                      <h2 className="text-2xl font-bold text-gray-900 line-clamp-1">
+                        {project.title}
+                      </h2>
 
                       {user.role !== 0 && (
                         <div className="flex space-x-2">
@@ -261,11 +282,15 @@ const ProjectsSection = () => {
                             <PopoverContent className="w-80 p-0 overflow-hidden border-none shadow-xl">
                               <div className="p-6 space-y-4">
                                 <div className="space-y-2">
-                                  <h4 className="text-lg font-bold text-red-600">Delete Project</h4>
+                                  <h4 className="text-lg font-bold text-red-600">
+                                    Delete Project
+                                  </h4>
                                   <p className="text-sm text-gray-600">
                                     Are you sure you want to delete{" "}
-                                    <span className="font-semibold">{project.title}</span>? This action cannot be
-                                    undone.
+                                    <span className="font-semibold">
+                                      {project.title}
+                                    </span>
+                                    ? This action cannot be undone.
                                   </p>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
@@ -305,13 +330,19 @@ const ProjectsSection = () => {
 
                       <div className="flex items-center text-gray-600">
                         <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                        <span className="text-sm">Started: {new Date(project.startDate).toLocaleDateString()}</span>
+                        <span className="text-sm">
+                          Started:{" "}
+                          {new Date(project.startDate).toLocaleDateString()}
+                        </span>
                       </div>
 
                       {project.completed && (
                         <div className="flex items-center text-gray-600">
                           <Clock className="h-4 w-4 mr-2 text-gray-400" />
-                          <span className="text-sm">Completed: {new Date(project.endDate).toLocaleDateString()}</span>
+                          <span className="text-sm">
+                            Completed:{" "}
+                            {new Date(project.endDate).toLocaleDateString()}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -333,8 +364,7 @@ const ProjectsSection = () => {
         </AnimatePresence>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ProjectsSection
-
+export default ProjectsSection;
