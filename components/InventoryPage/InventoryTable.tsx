@@ -153,7 +153,7 @@ const InventoryTable = () => {
         {user.role !== 0 && (
           <AddInventoryButton
             category={user.category}
-            isSuperAdmin={user.role === 3}
+            isSuperAdmin={user.role === 2}
           />
         )}
       </div>
