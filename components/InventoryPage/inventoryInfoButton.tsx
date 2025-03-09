@@ -7,7 +7,6 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { IconInfoCircleFilled } from "@tabler/icons-react";
 import { Component, Usage } from "@/models/models";
 import { motion } from "framer-motion";
 import {
