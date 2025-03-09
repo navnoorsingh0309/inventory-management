@@ -106,7 +106,7 @@ const AddProjectButton: React.FC<Props> = ({ category, isSuperAdmin }) => {
             Add New Project
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="max-h-[83vh] overflow-y-auto">
           <div className="grid gap-6 py-4">
             <motion.div
               className="grid grid-cols-4 items-center gap-4"
