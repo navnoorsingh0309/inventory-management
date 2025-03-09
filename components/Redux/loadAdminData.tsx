@@ -53,6 +53,7 @@ const LoadAdminData: React.FC<props> = ({
     if (user) {
       if (user && user.primaryEmailAddress && user.primaryEmailAddress.emailAddress === superAdmin) {
         setRole(3);
+        setCategory("BoST");
         return;
       }
       fetchCoSuperAdmins();
@@ -63,6 +64,7 @@ const LoadAdminData: React.FC<props> = ({
   useEffect(() => {
     if (isCoSuperAdmin) {
       setRole(2);
+      setCategory("BoST");
       return;
     }
     if (isAdmin) {

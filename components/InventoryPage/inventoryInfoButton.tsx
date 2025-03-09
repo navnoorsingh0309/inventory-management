@@ -1,41 +1,51 @@
-"use client"
-
-import type React from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import type { Component } from "@/models/models"
-import { Info, ExternalLink, Package, Tag, Archive, CheckCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { IconInfoCircleFilled } from "@tabler/icons-react";
+import { Component, Usage } from "@/models/models";
+import { motion } from "framer-motion";
+import {
+  Archive,
+  CheckCircle,
+  ExternalLink,
+  Info,
+  Package,
+  Tag,
+} from "lucide-react";
 
 type Props = {
-  component: Component
-  role: number
-}
-
-const MotionDialogContent = motion(DialogContent)
+  component: Component;
+  role: number;
+};
 
 const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 transition-colors duration-200">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full hover:bg-primary/10 transition-colors duration-200"
+        >
           <Info className="h-5 w-5 text-primary" />
         </Button>
       </DialogTrigger>
-      <DialogContent
-        className="sm:max-w-[550px] p-0 overflow-hidden border-none shadow-xl bg-gradient-to-br from-white to-gray-50"
-      >
-        <DialogHeader className="px-6 pt-6 pb-2">
+      <DialogContent>
+        <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <Package className="h-5 w-5 text-primary" />
             Inventory Information
           </DialogTitle>
         </DialogHeader>
-
-        <div className="p-6 space-y-6">
-          {/* Component Card */}
-          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+        {/* Component Card */}
+        <div className="max-h-[83vh] overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-md border border-gray-100">
             <div className="md:flex">
               <div className="md:shrink-0 p-4 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10">
                 <div className="relative">
@@ -52,20 +62,25 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
-                  <h1 className="text-2xl font-bold text-gray-800">{component.component}</h1>
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    {component.component}
+                  </h1>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Tag className="h-4 w-4 text-primary/70" />
-                    <span className="font-medium">Category:</span> {component.category}
+                    <span className="font-medium">Category:</span>{" "}
+                    {component.category}
                   </div>
 
                   <div className="flex items-center gap-2 text-gray-600">
                     <Archive className="h-4 w-4 text-primary/70" />
                     <span className="font-medium">In Stock:</span>
                     <div className="flex items-center">
-                      <span className="text-lg font-semibold mr-1">{component.inStock}</span>
+                      <span className="text-lg font-semibold mr-1">
+                        {component.inStock}
+                      </span>
                     </div>
                   </div>
 
@@ -73,7 +88,9 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
                     <CheckCircle className="h-4 w-4 text-primary/70" />
                     <span className="font-medium">Available:</span>
                     <div className="flex items-center">
-                      <span className="text-lg font-semibold mr-1">{component.inStock - component.inUse}</span>
+                      <span className="text-lg font-semibold mr-1">
+                        {component.inStock - component.inUse}
+                      </span>
                     </div>
                   </div>
 
@@ -96,19 +113,19 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
           </div>
 
           {/* Used Where Section */}
-          {role !== 0 && component.usedWhere && component.usedWhere.length > 0 && (
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                <Info className="h-4 w-4 text-primary" />
-                Used Where:
-              </h3>
-
-              <div className="overflow-x-auto pb-2">
-                <div className="flex space-x-4 min-w-max">
-                  {component.usedWhere.map((use, index) => (
+          {role !== 0 &&
+            component.usedWhere &&
+            component.usedWhere.length > 0 && (
+              <div className="mt-4 w-full overflow-x-auto overflow-y-hidden">
+                <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                  <Info className="h-4 w-4 text-primary" />
+                  Used Where:
+                </h3>
+                <div className="flex space-x-4 w-full mt-2 p-2 rounded-lg">
+                  {component.usedWhere.map((use: Usage, index: number) => (
                     <motion.div
                       key={use._id}
-                      className="p-4 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200 w-64"
+                      className="p-4 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -116,9 +133,13 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
                       {use.project ? (
                         <>
                           <div className="mb-2 pb-2 border-b border-gray-100">
-                            <p className="font-bold text-primary">{use.projectName}</p>
+                            <p className="font-bold text-primary">
+                              {use.projectName}
+                            </p>
                           </div>
-                          <p className="font-medium text-gray-800">{use.name}</p>
+                          <p className="font-medium text-gray-800">
+                            {use.name}
+                          </p>
                           <div className="mt-2 space-y-1 text-sm text-gray-600">
                             <p>Email: {use.email}</p>
                             <p>Phone: {use.phone}</p>
@@ -129,7 +150,9 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
                         </>
                       ) : (
                         <>
-                          <p className="font-medium text-gray-800 mb-2">{use.name}</p>
+                          <p className="font-medium text-gray-800 mb-2">
+                            {use.name}
+                          </p>
                           <div className="space-y-1 text-sm text-gray-600">
                             <p>Email: {use.email}</p>
                             <p>Phone: {use.phone}</p>
@@ -143,13 +166,11 @@ const InventoryInfoButton: React.FC<Props> = ({ component, role }) => {
                   ))}
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default InventoryInfoButton
-
+export default InventoryInfoButton;

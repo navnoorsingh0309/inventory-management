@@ -14,16 +14,14 @@ import { IconEdit } from "@tabler/icons-react";
 import { Component } from "@/models/models";
 
 interface EditInventoryProps {
-  component: Component,
-  category: string
+  component: Component
 }
 const EditInventoryButton: React.FC<EditInventoryProps> = ({
-  component,
-  category
+  component
 }) => {
   const [newComponent, setNewComponent] = useState(component.component);
   const [newQuantity, setNewQuantity] = useState(component.inStock);
-  const [newLink, setNewLink] = useState(component.link!);
+  const [newLink, setNewLink] = useState((component.link ? component.link : ""));
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -43,8 +41,8 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
           task: 1,
           _id: component._id,
           inStock: newQuantity,
+          category: component.category,
           component: newComponent,
-          category: category,
           link: newLink,
         }),
       });
@@ -111,7 +109,7 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
                 id="link"
                 placeholder="https://www.robu.in/.."
                 className="col-span-3"
-                type="strinng"
+                type="text"
                 step="1"
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}

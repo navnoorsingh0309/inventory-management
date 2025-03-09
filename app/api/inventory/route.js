@@ -67,7 +67,6 @@ export async function PUT(req) {
         {
           $set: {
             component: document.component,
-            category: document.category,
             inStock: document.inStock,
             link: document.link
           },
@@ -98,7 +97,7 @@ export async function PUT(req) {
       );
     }
 
-    return NextResponse.json({ Result: "Success" }, { status: 200 });
+    return NextResponse.json({ Result: document._id }, { status: 200 });
   } catch (error) {
     console.error("Error fetching collections:", error);
     return NextResponse.json(

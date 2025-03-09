@@ -205,7 +205,6 @@ const InventoryTable = () => {
                       <>
                         <EditInventoryButton
                           component={item}
-                          category={user.category}
                         />
                         <Popover>
                           <PopoverTrigger asChild>
