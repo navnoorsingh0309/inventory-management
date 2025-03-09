@@ -3,16 +3,14 @@ import React, { useEffect, useState } from "react";
 import { UserInventory } from "@/models/models";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Package,
   Clock,
   XCircle,
   CheckCircle,
   Search,
-  Calendar,
   Info,
-  Loader2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -287,7 +285,7 @@ const MyInventory = () => {
                   No inventory items found
                 </h3>
                 <p className="text-gray-500 mt-2">
-                  You don't have any inventory items yet.
+                  You don&apos;t have any inventory items yet.
                 </p>
               </motion.div>
             )}
@@ -317,7 +315,7 @@ const MyInventory = () => {
                   No acquired items
                 </h3>
                 <p className="text-gray-500 mt-2">
-                  You don't have any acquired inventory items yet.
+                  You don&apos;t have any acquired inventory items yet.
                 </p>
               </motion.div>
             )}
@@ -347,7 +345,7 @@ const MyInventory = () => {
                   No pending requests
                 </h3>
                 <p className="text-gray-500 mt-2">
-                  You don't have any pending inventory requests.
+                  You don&apos;t have any pending inventory requests.
                 </p>
               </motion.div>
             )}
@@ -377,7 +375,7 @@ const MyInventory = () => {
                   No rejected requests
                 </h3>
                 <p className="text-gray-500 mt-2">
-                  You don't have any rejected inventory requests.
+                  You don&apos;t have any rejected inventory requests.
                 </p>
               </motion.div>
             )}

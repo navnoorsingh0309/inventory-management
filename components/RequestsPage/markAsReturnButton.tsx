@@ -273,7 +273,7 @@ const MarkAsReturnButton: React.FC<Props> = ({ req, projects, category, getReqsF
           </div>
 
           <div className="text-xs text-gray-500 mt-2">
-            <p>• Return as component if it wasn't used in any project</p>
+            <p>• Return as component if it wasn&apos;t used in any project</p>
             <p>• Select a project if the component was used in a project</p>
           </div>
         </div>
