@@ -23,6 +23,7 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
 }) => {
   const [newComponent, setNewComponent] = useState(component.component);
   const [newQuantity, setNewQuantity] = useState(component.inStock);
+  const [newLink, setNewLink] = useState(component.link!);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -44,6 +45,7 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
           inStock: newQuantity,
           component: newComponent,
           category: category,
+          link: newLink,
         }),
       });
 
@@ -95,6 +97,24 @@ const EditInventoryButton: React.FC<EditInventoryProps> = ({
                 step="1"
                 value={newQuantity}
                 onChange={handleQuantityChange}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="link"
+                className="text-right text-lg font-bold"
+              >
+                Link
+              </Label>
+              <Input
+                id="link"
+                placeholder="https://www.robu.in/.."
+                className="col-span-3"
+                type="strinng"
+                step="1"
+                value={newLink}
+                onChange={(e) => setNewLink(e.target.value)}
                 required
               />
             </div>

@@ -69,6 +69,7 @@ export async function PUT(req) {
             component: document.component,
             category: document.category,
             inStock: document.inStock,
+            link: document.link
           },
         }
       );
