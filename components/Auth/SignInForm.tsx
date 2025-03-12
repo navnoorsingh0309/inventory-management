@@ -41,7 +41,7 @@ const SignInForm = ({
   const { isLoaded, signIn, setActive } = useSignIn();
   useEffect(() => {
     if (user) {
-      dispatch(setId("UI1"));
+      dispatch(setId(user.id));
       router.replace("/inventory");
     }
   }, [user, router, dispatch]);
