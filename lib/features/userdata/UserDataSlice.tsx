@@ -38,6 +38,9 @@ export const UserDataSlice = createSlice({
     },
     setCategory: (state, action: PayloadAction<string>) => {
       state.user.category = action.payload
+    },
+    signOut: (state) => {
+      state.user = initialState.user;
     }
   }
 })
