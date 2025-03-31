@@ -2,10 +2,18 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { SignOutButton } from "@clerk/nextjs";
+import { useDispatch, useSelector } from "react-redux";
+import { useClerk } from "@clerk/nextjs";
 import { motion } from "framer-motion";
-import { Package, FolderOpen, ShoppingBag, FileText, ShieldCheck, LogOut, User } from 'lucide-react';
+import {
+  Package,
+  FolderOpen,
+  ShoppingBag,
+  FileText,
+  ShieldCheck,
+  LogOut,
+  User,
+} from "lucide-react";
 import MaxWidthWrapper from "../ui/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +27,13 @@ import {
 import { RootState } from "@/lib/store";
 import HamburgerMenu from "./HamburgerMenu";
 import { User as UserSchema } from "@/models/models";
+import { signOut as signOutRedux } from "@/lib/features/userdata/UserDataSlice";
 
 const NavBar = () => {
   const user = useSelector((state: RootState) => state.UserData.user);
   const [scrolled, setScrolled] = useState(false);
-
-  // Add scroll effect
+  const dispatch = useDispatch();
+  const { signOut } = useClerk();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -38,21 +47,29 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const signOutHandler = async () => {
+    await signOut();
+    dispatch(signOutRedux());
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={`sticky h-16 inset-x-0 top-0 z-30 w-full border-b backdrop-blur-lg transition-all duration-300 ${
-        scrolled 
-          ? "border-gray-200 bg-white/75 dark:bg-gray-900/75 dark:border-gray-800" 
+        scrolled
+          ? "border-gray-200 bg-white/75 dark:bg-gray-900/75 dark:border-gray-800"
           : "border-transparent bg-white/50 dark:bg-gray-900/50"
       }`}
     >
       <MaxWidthWrapper>
         <div className="flex justify-between items-center h-full w-full">
           <div className="flex h-full items-center gap-3">
-            <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
+            <Link
+              href="/"
+              className="flex items-center gap-2 transition-transform hover:scale-105"
+            >
               <motion.img
                 src="/bost.png"
                 className="h-9 w-9 rounded-full shadow-sm"
@@ -87,34 +104,49 @@ const NavBar = () => {
               <div className="flex h-full items-center gap-2">
                 <div className="hidden md:flex h-full items-center space-x-1">
                   {user.role === 3 && (
-                    <NavItem href="/admin" icon={<ShieldCheck className="h-4 w-4" />}>
+                    <NavItem
+                      href="/admin"
+                      icon={<ShieldCheck className="h-4 w-4" />}
+                    >
                       Admin Portal
                     </NavItem>
                   )}
-                  
-                  <NavItem href="/inventory" icon={<Package className="h-4 w-4" />}>
+
+                  <NavItem
+                    href="/inventory"
+                    icon={<Package className="h-4 w-4" />}
+                  >
                     Inventory
                   </NavItem>
-                  
-                  <NavItem href="/projects" icon={<FolderOpen className="h-4 w-4" />}>
+
+                  <NavItem
+                    href="/projects"
+                    icon={<FolderOpen className="h-4 w-4" />}
+                  >
                     Projects
                   </NavItem>
-                  
+
                   {(user.role === 0 || user.role === 2) && (
-                    <NavItem href="/my-inventory" icon={<ShoppingBag className="h-4 w-4" />}>
+                    <NavItem
+                      href="/my-inventory"
+                      icon={<ShoppingBag className="h-4 w-4" />}
+                    >
                       My Inventory
                     </NavItem>
                   )}
-                  
+
                   {user.role !== 0 && (
-                    <NavItem href="/requests" icon={<FileText className="h-4 w-4" />}>
+                    <NavItem
+                      href="/requests"
+                      icon={<FileText className="h-4 w-4" />}
+                    >
                       Requests
                     </NavItem>
                   )}
 
-                  <UserMenu user={user} />
+                  <UserMenu user={user} signOutHandler={signOutHandler} />
                 </div>
-                
+
                 <HamburgerMenu />
               </div>
             )}
@@ -147,13 +179,14 @@ const NavItem: React.FC<NavItemProps> = ({ href, children, icon }) => (
 
 interface UserProps {
   user: UserSchema;
+  signOutHandler: () => void;
 }
 
-const UserMenu: React.FC<UserProps> = ({ user }) => (
+const UserMenu: React.FC<UserProps> = ({ user, signOutHandler }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         size="sm"
         className="rounded-full h-9 w-9 p-0 border-gray-200 bg-white/80 hover:bg-gray-100"
       >
@@ -171,19 +204,20 @@ const UserMenu: React.FC<UserProps> = ({ user }) => (
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem asChild>
-        <Link href="/profile" className="cursor-pointer flex items-center gap-2">
+        <Link
+          href="/profile"
+          className="cursor-pointer flex items-center gap-2"
+        >
           <User className="h-4 w-4" />
           <span>Profile</span>
         </Link>
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem className="text-red-600 focus:text-red-600">
-        <SignOutButton>
-          <div className="flex items-center gap-2 cursor-pointer w-full">
-            <LogOut className="h-4 w-4" />
-            <span>Sign out</span>
-          </div>
-        </SignOutButton>
+        <div className="flex items-center gap-2 cursor-pointer w-full" onClick={signOutHandler}>
+          <LogOut className="h-4 w-4" />
+          <span>Sign out</span>
+        </div>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
