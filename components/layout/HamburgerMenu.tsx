@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SignOutButton, useClerk } from "@clerk/nextjs";
+import { useClerk } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/lib/store";

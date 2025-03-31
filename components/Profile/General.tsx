@@ -25,7 +25,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
 import { User } from "@/models/models";
 import { Alert, AlertDescription } from "../ui/alert";
 import { useDispatch } from "react-redux";
