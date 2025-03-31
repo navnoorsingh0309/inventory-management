@@ -37,8 +37,7 @@ interface GeneralProps {
 }
 
 const General: React.FC<GeneralProps> = ({ currentUser }) => {
-  const { isSignedIn, user, isLoaded } = useUser()
-
+  const { user } = useUser()
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<User>(currentUser);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);

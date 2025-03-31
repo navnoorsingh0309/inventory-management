@@ -41,7 +41,7 @@ const MainPage = () => {
           </TabsTrigger>
         </TabsList>
         <General currentUser={user} />
-        <Security user={user} />
+        <Security />
       </Tabs>
     </div>
   );
