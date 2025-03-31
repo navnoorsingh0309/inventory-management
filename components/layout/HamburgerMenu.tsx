@@ -22,7 +22,7 @@ const HamburgerMenu = () => {
       {/* Hamburger Button */}
       <button
         onClick={handleMenuClick}
-        className="flex flex-col justify-center items-center w-10 h-10 rounded-full bg-primary/5 hover:bg-primary/10 transition-colors"
+        className="flex flex-col justify-center items-center w-10 h-10"
         aria-label="Toggle menu"
         aria-expanded={showMenu}
       >
