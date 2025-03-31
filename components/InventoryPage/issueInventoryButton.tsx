@@ -226,7 +226,6 @@ const IssueInventoryButton: React.FC<Props> = ({ component, user }) => {
                     disabled={(date) =>
                       date < new Date()
                     }
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
