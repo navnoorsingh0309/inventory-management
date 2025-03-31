@@ -37,7 +37,7 @@ interface GeneralProps {
 }
 
 const General: React.FC<GeneralProps> = ({ currentUser }) => {
-  const { user } = useUser()
+  const { user } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<User>(currentUser);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -71,7 +71,10 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
   const handleSaveProfile = async () => {
     try {
       dispatch(setUser(editedUser));
-      await user!.update({ firstName: editedUser.firstName, lastName: editedUser.lastName });
+      await user!.update({
+        firstName: editedUser.firstName,
+        lastName: editedUser.lastName,
+      });
       setEditedUser(editedUser);
       setIsEditing(false);
       setShowSuccessAlert(true);
@@ -144,7 +147,7 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
         >
           <Card className="mb-8">
             <CardHeader className="pb-4">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col md:flex-row justify-center md:justify-between items-center text-center md:text-left gap-4">
                 <div>
                   <CardTitle className="text-2xl">
                     Personal Information
@@ -175,10 +178,12 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 <motion.div
                   variants={itemVariants}
-                  className="flex flex-col items-center space-y-3"
+                  className="flex flex-col justify-center items-center space-y-3 w-full md:w-auto"
                 >
                   <Avatar className="h-24 w-24">
-                    <AvatarImage alt={`${currentUser.firstName} ${currentUser.lastName}`} />
+                    <AvatarImage
+                      alt={`${currentUser.firstName} ${currentUser.lastName}`}
+                    />
                     <AvatarFallback className="text-2xl">
                       {currentUser.firstName.charAt(0)}
                       {currentUser.lastName.charAt(0)}
@@ -250,9 +255,6 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
                       <div className="p-2 bg-gray-50 rounded-md border border-gray-200 w-full font-mono">
                         {currentUser.email}
                       </div>
-                      <Badge className="ml-2 bg-blue-100 text-blue-800 border-blue-200">
-                        Fixed
-                      </Badge>
                     </div>
                   </motion.div>
 
@@ -268,9 +270,6 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
                         <div className="p-2 bg-gray-50 rounded-md border border-gray-200 w-full">
                           {getRoleName(currentUser.role)}
                         </div>
-                        <Badge className="ml-2 bg-blue-100 text-blue-800 border-blue-200">
-                          Fixed
-                        </Badge>
                       </div>
                     </div>
                     {currentUser.category && (
@@ -282,9 +281,6 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
                           <div className="p-2 bg-gray-50 rounded-md border border-gray-200 w-full">
                             {currentUser.category}
                           </div>
-                          <Badge className="ml-2 bg-blue-100 text-blue-800 border-blue-200">
-                            Fixed
-                          </Badge>
                         </div>
                       </div>
                     )}
@@ -298,9 +294,6 @@ const General: React.FC<GeneralProps> = ({ currentUser }) => {
                       <div className="p-2 bg-gray-50 rounded-md border border-gray-200 w-full font-mono">
                         {currentUser.id}
                       </div>
-                      <Badge className="ml-2 bg-blue-100 text-blue-800 border-blue-200">
-                        Fixed
-                      </Badge>
                     </div>
                   </motion.div>
                 </div>
