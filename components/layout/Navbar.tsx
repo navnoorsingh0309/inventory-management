@@ -76,7 +76,7 @@ const NavBar = () => {
                 whileHover={{ rotate: 10 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               />
-              <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent hidden sm:inline-block">
+              <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 Inventory Management
               </span>
             </Link>
@@ -86,7 +86,7 @@ const NavBar = () => {
             {user.id === "" ? (
               <>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   asChild
                   className="text-gray-700 dark:text-gray-300 hover:text-primary"

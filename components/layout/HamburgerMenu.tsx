@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useClerk } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/lib/store";
 import {
   LogOut,
@@ -16,13 +16,22 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { signOut as signOutRedux } from "@/lib/features/userdata/UserDataSlice";
 
 const HamburgerMenu = () => {
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((state: RootState) => state.UserData.user);
+  const dispatch = useDispatch();
+  const { signOut } = useClerk();
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
+  };
+
+  const signOutHandler = async () => {
+    setShowMenu(false);
+    await signOut();
+    dispatch(signOutRedux());
   };
 
   return (
@@ -84,6 +93,7 @@ const HamburgerMenu = () => {
                       <Link
                         href="/profile"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                        onClick={() => setShowMenu(false)}
                       >
                         <User className="h-5 w-5 text-primary" />
                         Profile
@@ -94,6 +104,7 @@ const HamburgerMenu = () => {
                         <Link
                           href="/admin"
                           className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                          onClick={() => setShowMenu(false)}
                         >
                           <ShieldCheck className="h-5 w-5 text-primary" />
                           Admin Portal
@@ -104,6 +115,7 @@ const HamburgerMenu = () => {
                       <Link
                         href="/inventory"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                        onClick={() => setShowMenu(false)}
                       >
                         <Package className="h-5 w-5 text-primary" />
                         Inventory
@@ -113,6 +125,7 @@ const HamburgerMenu = () => {
                       <Link
                         href="/projects"
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                        onClick={() => setShowMenu(false)}
                       >
                         <FolderOpen className="h-5 w-5 text-primary" />
                         Projects
@@ -123,6 +136,7 @@ const HamburgerMenu = () => {
                         <Link
                           href="/my-inventory"
                           className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                          onClick={() => setShowMenu(false)}
                         >
                           <ShoppingBag className="h-5 w-5 text-primary" />
                           My Inventory
@@ -134,6 +148,7 @@ const HamburgerMenu = () => {
                         <Link
                           href="/requests"
                           className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                          onClick={() => setShowMenu(false)}
                         >
                           <FileText className="h-5 w-5 text-primary" />
                           Requests
@@ -144,15 +159,14 @@ const HamburgerMenu = () => {
                 </nav>
 
                 <div className="p-4 border-t dark:border-gray-800">
-                  <SignOutButton>
-                    <Button
-                      variant="outline"
-                      className="w-full flex items-center gap-2"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </Button>
-                  </SignOutButton>
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center gap-2"
+                    onClick={signOutHandler}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </Button>
                 </div>
               </div>
             </motion.div>
