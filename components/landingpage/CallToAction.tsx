@@ -31,9 +31,6 @@ const CallToAction = () => {
                 Get Started <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/">Contact Support</Link>
-            </Button>
           </div>
         </motion.div>
       </div>
