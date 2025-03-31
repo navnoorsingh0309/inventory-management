@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SignInSchema } from "@/lib/auth/validation";
 import { useEffect, useState } from "react";
-import { useSignIn, useUser } from "@clerk/nextjs";
+import { useClerk, useSignIn, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setId } from "@/lib/features/userdata/UserDataSlice";
@@ -36,6 +36,7 @@ const SignInForm = ({
   const [forgetPasswordCode, setForgetPasswordCode] = useState<string[]>([]);
   const [newPassword, setNewPassword] = useState("");
   const { toast } = useToast();
+  const { signOut } = useClerk();
   const {
     register,
     handleSubmit,
@@ -112,9 +113,11 @@ const SignInForm = ({
 
       if (response?.status === "complete") {
         toast({ title: "Password reset successfully!" });
+        await signOut();
         setForgottenPassword(false);
       }
     } catch (err) {
+      console.log(err);
       toast({
         title: "Password reset failed",
         variant: "destructive",
