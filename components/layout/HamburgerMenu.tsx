@@ -1,21 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { SignOutButton } from "@clerk/nextjs"
-import { Button } from "@/components/ui/button"
-import { useSelector } from "react-redux"
-import type { RootState } from "@/lib/store"
-import { LogOut, Package, FolderOpen, ShoppingBag, FileText, ShieldCheck } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
+import { useState } from "react";
+import { SignOutButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/store";
+import {
+  LogOut,
+  Package,
+  FolderOpen,
+  ShoppingBag,
+  FileText,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const HamburgerMenu = () => {
-  const [showMenu, setShowMenu] = useState(false)
-  const user = useSelector((state: RootState) => state.UserData.user)
+  const [showMenu, setShowMenu] = useState(false);
+  const user = useSelector((state: RootState) => state.UserData.user);
 
   const handleMenuClick = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   return (
     <div className="md:hidden relative z-50">
@@ -28,13 +36,19 @@ const HamburgerMenu = () => {
       >
         <div className="relative w-6 h-5">
           <span
-            className={`absolute h-0.5 w-6 bg-primary rounded-full transform transition-all duration-300 ${showMenu ? "rotate-45 top-2" : "top-0"}`}
+            className={`absolute h-0.5 w-6 bg-primary rounded-full transform transition-all duration-300 ${
+              showMenu ? "rotate-45 top-2" : "top-0"
+            }`}
           ></span>
           <span
-            className={`absolute h-0.5 w-6 bg-primary rounded-full top-2 transition-all duration-200 ${showMenu ? "opacity-0" : "opacity-100"}`}
+            className={`absolute h-0.5 w-6 bg-primary rounded-full top-2 transition-all duration-200 ${
+              showMenu ? "opacity-0" : "opacity-100"
+            }`}
           ></span>
           <span
-            className={`absolute h-0.5 w-6 bg-primary rounded-full transform transition-all duration-300 ${showMenu ? "-rotate-45 top-2" : "top-4"}`}
+            className={`absolute h-0.5 w-6 bg-primary rounded-full transform transition-all duration-300 ${
+              showMenu ? "-rotate-45 top-2" : "top-4"
+            }`}
           ></span>
         </div>
       </button>
@@ -66,6 +80,15 @@ const HamburgerMenu = () => {
 
                 <nav className="flex-1 overflow-y-auto py-4">
                   <ul className="space-y-1 px-3">
+                    <li>
+                      <Link
+                        href="/profile"
+                        className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors text-gray-800 dark:text-gray-200 font-medium"
+                      >
+                        <User className="h-5 w-5 text-primary" />
+                        Profile
+                      </Link>
+                    </li>
                     {user.role === 3 && (
                       <li>
                         <Link
@@ -122,7 +145,10 @@ const HamburgerMenu = () => {
 
                 <div className="p-4 border-t dark:border-gray-800">
                   <SignOutButton>
-                    <Button variant="outline" className="w-full flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="w-full flex items-center gap-2"
+                    >
                       <LogOut className="h-4 w-4" />
                       Sign Out
                     </Button>
@@ -134,8 +160,7 @@ const HamburgerMenu = () => {
         )}
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default HamburgerMenu
-
+export default HamburgerMenu;
