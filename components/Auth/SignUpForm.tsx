@@ -148,14 +148,14 @@ const SignUpForm = ({
             <div className="grid grid-cols-2 space-x-2">
               <div className="space-y-2">
                 <Label htmlFor="firstname">First Name</Label>
-                <Input id="firstname" {...register("firstname")} />
+                <Input id="firstname" {...register("firstname")} placeholder="First Name" />
                 {errors.firstname && (
                   <p className="text-red-600">{errors.firstname.message}</p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastname">Last Name</Label>
-                <Input id="lastname" {...register("lastname")} />
+                <Input id="lastname" {...register("lastname")} placeholder="Last Name" />
                 {errors.lastname && (
                   <p className="text-red-600">{errors.lastname.message}</p>
                 )}
@@ -165,7 +165,7 @@ const SignUpForm = ({
             {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...register("email")} />
+              <Input id="email" type="email" {...register("email")} placeholder="Email" />
               {errors.email && (
                 <p className="text-red-600">{errors.email.message}</p>
               )}
@@ -174,7 +174,7 @@ const SignUpForm = ({
             {/* Password */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" {...register("password")} />
+              <Input id="password" type="password" {...register("password")} placeholder="●●●●●●●●" />
               {errors.password && (
                 <p className="text-red-600">{errors.password.message}</p>
               )}
